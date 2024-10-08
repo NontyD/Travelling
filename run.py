@@ -72,3 +72,19 @@ def create_trip():
     trips[trip_id] = new_trip
     save_data(file_path, trips)
     print("New trip added successfully!")
+
+def view_trips():
+    """Displays all trips saved in the trips.json file."""
+    file_path = "trips.json"
+    trips = load_data(file_path)
+
+    if not trips:
+        print("No trips found.")
+    else:
+        print("\n--- All Trips ---")
+        for trip_id, details in trips.items():
+            print(f"Trip ID: {trip_id}")
+            print(f"Destination: {details['destination']}")
+            print(f"Start Date: {details['start_date']}")
+            print(f"End Date: {details['end_date']}")
+            print("")
