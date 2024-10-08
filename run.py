@@ -88,3 +88,27 @@ def view_trips():
             print(f"Start Date: {details['start_date']}")
             print(f"End Date: {details['end_date']}")
             print("")
+
+def edit_trip():
+    """Edits an existing trip in the trips.json file."""
+    file_path = "trips.json"
+    trips = load_data(file_path)
+
+    trip_id = input("Enter the Trip ID to edit: ")
+
+    if trip_id in trips:
+        print("Editing trip details. Leave blank to keep the current value.")
+        destination = input(f"Enter new destination (current: {trips[trip_id]['destination']}): ") or trips[trip_id]['destination']
+        start_date = input(f"Enter new start date (current: {trips[trip_id]['start_date']}): ") or trips[trip_id]['start_date']
+        end_date = input(f"Enter new end date (current: {trips[trip_id]['end_date']}): ") or trips[trip_id]['end_date']
+
+        trips[trip_id] = {
+            "destination": destination,
+            "start_date": start_date,
+            "end_date": end_date
+        }
+
+        save_data(file_path, trips)
+        print("Trip updated successfully!")
+    else:
+        print("Trip ID not found.")
