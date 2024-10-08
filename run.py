@@ -112,3 +112,17 @@ def edit_trip():
         print("Trip updated successfully!")
     else:
         print("Trip ID not found.")
+
+def delete_trip():
+    """Deletes a trip from the trips.json file."""
+    file_path = "trips.json"
+    trips = load_data(file_path)
+
+    trip_id = input("Enter the Trip ID to delete: ")
+
+    if trip_id in trips:
+        del trips[trip_id]
+        save_data(file_path, trips)
+        print("Trip deleted successfully!")
+    else:
+        print("Trip ID not found.")
