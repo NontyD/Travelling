@@ -126,3 +126,49 @@ def delete_trip():
         print("Trip deleted successfully!")
     else:
         print("Trip ID not found.")
+
+# --- Itinerary Management Functions ---
+def manage_itinerary_menu():
+    """Displays the menu for managing the itinerary."""
+    while True:
+        print("\n--- Manage Itinerary ---")
+        print("1. Add an Itinerary Item")
+        print("2. View Itinerary")
+        print("3. Edit an Itinerary Item")
+        print("4. Delete an Itinerary Item")
+        print("5. Back to Main Menu")
+
+        choice = input("Choose an option: ")
+
+        if choice == '1':
+            add_itinerary_item()
+        elif choice == '2':
+            view_itinerary()
+        elif choice == '3':
+            edit_itinerary_item()
+        elif choice == '4':
+            delete_itinerary_item()
+        elif choice == '5':
+            break
+        else:
+            print("Invalid option. Please choose again.")
+
+def add_itinerary_item():
+    """Adds an itinerary item to the itinerary.json file."""
+    file_path = "itinerary.json"
+    itinerary = load_data(file_path)
+
+    item_id = input("Enter item ID: ")
+    trip_id = input("Enter the Trip ID: ")
+    date = input("Enter date (YYYY-MM-DD): ")
+    activity = input("Enter activity: ")
+
+    new_item = {
+        "trip_id": trip_id,
+        "date": date,
+        "activity": activity
+    }
+
+    itinerary[item_id] = new_item
+    save_data(file_path, itinerary)
+    print("New itinerary item added successfully!")
