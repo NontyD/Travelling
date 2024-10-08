@@ -26,3 +26,29 @@ def main_menu():
             break
         else:
             print("Invalid option. Please choose again.")
+
+# --- Trip Management Functions ---
+def manage_trips_menu():
+    """Displays the menu for managing trips."""
+    while True:
+        print("\n--- Manage Trips ---")
+        print("1. Add a New Trip")
+        print("2. View All Trips")
+        print("3. Edit a Trip")
+        print("4. Delete a Trip")
+        print("5. Back to Main Menu")
+
+        choice = input("Choose an option: ")
+
+        if choice == '1':
+            create_trip()
+        elif choice == '2':
+            view_trips()
+        elif choice == '3':
+            edit_trip()
+        elif choice == '4':
+            delete_trip()
+        elif choice == '5':
+            break
+        else:
+            print("Invalid option. Please choose again.")
