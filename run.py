@@ -172,3 +172,19 @@ def add_itinerary_item():
     itinerary[item_id] = new_item
     save_data(file_path, itinerary)
     print("New itinerary item added successfully!")
+
+def view_itinerary():
+    """Displays all itinerary items."""
+    file_path = "itinerary.json"
+    itinerary = load_data(file_path)
+
+    if not itinerary:
+        print("No itinerary items found.")
+    else:
+        print("\n--- Itinerary ---")
+        for item_id, details in itinerary.items():
+            print(f"Item ID: {item_id}")
+            print(f"Trip ID: {details['trip_id']}")
+            print(f"Date: {details['date']}")
+            print(f"Activity: {details['activity']}")
+            print("")
