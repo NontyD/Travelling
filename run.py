@@ -52,3 +52,23 @@ def manage_trips_menu():
             break
         else:
             print("Invalid option. Please choose again.")
+
+def create_trip():
+    """Adds a new trip to the trips.json file."""
+    file_path = "trips.json"
+    trips = load_data(file_path)
+
+    trip_id = input("Enter trip ID: ")
+    destination = input("Enter destination: ")
+    start_date = input("Enter start date (YYYY-MM-DD): ")
+    end_date = input("Enter end date (YYYY-MM-DD): ")
+
+    new_trip = {
+        "destination": destination,
+        "start_date": start_date,
+        "end_date": end_date
+    }
+
+    trips[trip_id] = new_trip
+    save_data(file_path, trips)
+    print("New trip added successfully!")
