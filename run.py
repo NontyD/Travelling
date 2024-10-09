@@ -331,3 +331,29 @@ def delete_expense():
         print("Expense deleted successfully!")
     else:
         print("Expense ID not found.")
+
+# --- Packing List Management Functions ---
+def manage_packing_menu():
+    """Displays the menu for managing the packing list."""
+    while True:
+        print("\n--- Manage Packing List ---")
+        print("1. Add an Item to Packing List")
+        print("2. View Packing List")
+        print("3. Update Packing Item Status")
+        print("4. Delete a Packing Item")
+        print("5. Back to Main Menu")
+
+        choice = input("Choose an option: ")
+
+        if choice == '1':
+            add_packing_item()
+        elif choice == '2':
+            view_packing_list()
+        elif choice == '3':
+            update_packing_status()
+        elif choice == '4':
+            delete_packing_item()
+        elif choice == '5':
+            break
+        else:
+            print("Invalid option. Please choose again.")
