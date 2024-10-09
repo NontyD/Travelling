@@ -393,3 +393,18 @@ def view_packing_list():
             print(f"Item Name: {details['item_name']}")
             print(f"Status: {details['status']}")
             print("")
+
+def update_packing_status():
+    """Updates the status of a packing item."""
+    file_path = "packing_list.json"
+    packing_list = load_data(file_path)
+
+    item_id = input("Enter the Item ID to update: ")
+
+    if item_id in packing_list:
+        status = input("Enter new status (packed/not packed): ").lower()
+        packing_list[item_id]['status'] = status
+        save_data(file_path, packing_list)
+        print("Packing item status updated successfully!")
+    else:
+        print("Item ID not found.")
