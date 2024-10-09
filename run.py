@@ -408,3 +408,17 @@ def update_packing_status():
         print("Packing item status updated successfully!")
     else:
         print("Item ID not found.")
+
+def delete_packing_item():
+    """Deletes an item from the packing list."""
+    file_path = "packing_list.json"
+    packing_list = load_data(file_path)
+
+    item_id = input("Enter the Item ID to delete: ")
+
+    if item_id in packing_list:
+        del packing_list[item_id]
+        save_data(file_path, packing_list)
+        print("Packing item deleted successfully!")
+    else:
+        print("Item ID not found.")
