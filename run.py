@@ -377,3 +377,19 @@ def add_packing_item():
     packing_list[item_id] = new_item
     save_data(file_path, packing_list)
     print("New item added to packing list successfully!")
+
+def view_packing_list():
+    """Displays all the items in the packing list."""
+    file_path = "packing_list.json"
+    packing_list = load_data(file_path)
+
+    if not packing_list:
+        print("No packing items found.")
+    else:
+        print("\n--- Packing List ---")
+        for item_id, details in packing_list.items():
+            print(f"Item ID: {item_id}")
+            print(f"Trip ID: {details['trip_id']}")
+            print(f"Item Name: {details['item_name']}")
+            print(f"Status: {details['status']}")
+            print("")
