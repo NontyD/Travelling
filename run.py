@@ -1,5 +1,7 @@
 import json
 import os
+import re
+from datetime import datetime
 
 def load_data(file_path):
     """Loads data from a JSON file."""
@@ -65,15 +67,43 @@ def manage_trips_menu():
         else:
             print("Invalid option. Please choose again.")
 
+
 def create_trip():
-    """Adds a new trip to the trips.json file."""
+    """Adds a new trip to the trips.json file with input validation."""
     file_path = "trips.json"
     trips = load_data(file_path)
 
-    trip_id = input("Enter trip ID: ")
-    destination = input("Enter destination: ")
-    start_date = input("Enter start date (YYYY-MM-DD): ")
-    end_date = input("Enter end date (YYYY-MM-DD): ")
+    # Validate trip ID
+    while True:
+        trip_id = input("Enter trip ID: ").strip()
+        if trip_id and trip_id not in trips:
+            break
+        print("Invalid trip ID or trip ID already exists. Please try again.")
+
+    # Validate destination
+    destination = input("Enter destination: ").strip()
+    while not destination:
+        print("Destination cannot be empty.")
+        destination = input("Enter destination: ").strip()
+
+    # Validate start date
+    while True:
+        start_date = input("Enter start date (YYYY-MM-DD): ").strip()
+        if validate_date_format(start_date):
+            break
+        print("Invalid date format. Please enter the date as YYYY-MM-DD.")
+
+    # Validate end date
+    while True:
+        end_date = input("Enter end date (YYYY-MM-DD): ").strip()
+        if validate_date_format(end_date):
+            # Ensure the end date is after the start date
+            if validate_date_order(start_date, end_date):
+                break
+            else:
+                print("End date must be after the start date.")
+        else:
+            print("Invalid date format. Please enter the date as YYYY-MM-DD.")
 
     new_trip = {
         "destination": destination,
@@ -84,6 +114,20 @@ def create_trip():
     trips[trip_id] = new_trip
     save_data(file_path, trips)
     print("New trip added successfully!")
+
+def validate_date_format(date_str):
+    """Validates if the given date string matches the YYYY-MM-DD format."""
+    try:
+        datetime.strptime(date_str, "%Y-%m-%d")
+        return True
+    except ValueError:
+        return False
+
+def validate_date_order(start_date, end_date):
+    """Validates that the end date is after the start date."""
+    start = datetime.strptime(start_date, "%Y-%m-%d")
+    end = datetime.strptime(end_date, "%Y-%m-%d")
+    return end > start
 
 def view_trips():
     """Displays all trips saved in the trips.json file."""
