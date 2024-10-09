@@ -1,6 +1,13 @@
 import json
 import os
 
+def load_data(file_path):
+    """Loads data from a JSON file."""
+    if os.path.exists(file_path):
+        with open(file_path, "r") as file:
+            return json.load(file)
+    return {}
+
 def main_menu():
     """Displays the main menu and routes to different modules."""
     while True:
@@ -422,3 +429,6 @@ def delete_packing_item():
         print("Packing item deleted successfully!")
     else:
         print("Item ID not found.")
+
+if __name__ == "__main__":
+    main_menu()
