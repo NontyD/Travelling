@@ -226,3 +226,29 @@ def delete_itinerary_item():
         print("Itinerary item deleted successfully!")
     else:
         print("Item ID not found.")
+
+# --- Expenses Management Functions ---
+def manage_expenses_menu():
+    """Displays the menu for managing expenses."""
+    while True:
+        print("\n--- Manage Expenses ---")
+        print("1. Add an Expense")
+        print("2. View All Expenses")
+        print("3. Edit an Expense")
+        print("4. Delete an Expense")
+        print("5. Back to Main Menu")
+
+        choice = input("Choose an option: ")
+
+        if choice == '1':
+            add_expense()
+        elif choice == '2':
+            view_expenses()
+        elif choice == '3':
+            edit_expense()
+        elif choice == '4':
+            delete_expense()
+        elif choice == '5':
+            break
+        else:
+            print("Invalid option. Please choose again.")
