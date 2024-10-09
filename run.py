@@ -274,3 +274,20 @@ def add_expense():
     expenses[expense_id] = new_expense
     save_data(file_path, expenses)
     print("New expense added successfully!")
+
+def view_expenses():
+    """Displays all the expenses saved in the expenses.json file."""
+    file_path = "expenses.json"
+    expenses = load_data(file_path)
+
+    if not expenses:
+        print("No expenses found.")
+    else:
+        print("\n--- All Expenses ---")
+        for expense_id, details in expenses.items():
+            print(f"Expense ID: {expense_id}")
+            print(f"Trip ID: {details['trip_id']}")
+            print(f"Amount: {details['amount']}")
+            print(f"Category: {details['category']}")
+            print(f"Description: {details['description']}")
+            print("")
