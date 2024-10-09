@@ -8,6 +8,11 @@ def load_data(file_path):
             return json.load(file)
     return {}
 
+def save_data(file_path, data):
+    """Saves data to a JSON file."""
+    with open(file_path, "w") as file:
+        json.dump(data, file, indent=4)
+
 def main_menu():
     """Displays the main menu and routes to different modules."""
     while True:
