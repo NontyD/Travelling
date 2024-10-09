@@ -317,3 +317,17 @@ def edit_expense():
         print("Expense updated successfully!")
     else:
         print("Expense ID not found.")
+
+def delete_expense():
+    """Deletes an expense from the expenses.json file."""
+    file_path = "expenses.json"
+    expenses = load_data(file_path)
+
+    expense_id = input("Enter the Expense ID to delete: ")
+
+    if expense_id in expenses:
+        del expenses[expense_id]
+        save_data(file_path, expenses)
+        print("Expense deleted successfully!")
+    else:
+        print("Expense ID not found.")
