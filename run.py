@@ -212,3 +212,17 @@ def edit_itinerary_item():
         print("Itinerary item updated successfully!")
     else:
         print("Item ID not found.")
+
+def delete_itinerary_item():
+    """Deletes an itinerary item."""
+    file_path = "itinerary.json"
+    itinerary = load_data(file_path)
+
+    item_id = input("Enter the Item ID to delete: ")
+
+    if item_id in itinerary:
+        del itinerary[item_id]
+        save_data(file_path, itinerary)
+        print("Itinerary item deleted successfully!")
+    else:
+        print("Item ID not found.")
