@@ -188,3 +188,27 @@ def view_itinerary():
             print(f"Date: {details['date']}")
             print(f"Activity: {details['activity']}")
             print("")
+
+def edit_itinerary_item():
+    """Edits an existing itinerary item."""
+    file_path = "itinerary.json"
+    itinerary = load_data(file_path)
+
+    item_id = input("Enter the Item ID to edit: ")
+
+    if item_id in itinerary:
+        print("Editing itinerary item details. Leave blank to keep the current value.")
+        trip_id = input(f"Enter new Trip ID (current: {itinerary[item_id]['trip_id']}): ") or itinerary[item_id]['trip_id']
+        date = input(f"Enter new date (current: {itinerary[item_id]['date']}): ") or itinerary[item_id]['date']
+        activity = input(f"Enter new activity (current: {itinerary[item_id]['activity']}): ") or itinerary[item_id]['activity']
+
+        itinerary[item_id] = {
+            "trip_id": trip_id,
+            "date": date,
+            "activity": activity
+        }
+
+        save_data(file_path, itinerary)
+        print("Itinerary item updated successfully!")
+    else:
+        print("Item ID not found.")
