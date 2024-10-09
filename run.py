@@ -357,3 +357,23 @@ def manage_packing_menu():
             break
         else:
             print("Invalid option. Please choose again.")
+
+def add_packing_item():
+    """Adds a new item to the packing list."""
+    file_path = "packing_list.json"
+    packing_list = load_data(file_path)
+
+    item_id = input("Enter item ID: ")
+    trip_id = input("Enter the Trip ID: ")
+    item_name = input("Enter the item name: ")
+    status = input("Enter status (packed/not packed): ").lower()
+
+    new_item = {
+        "trip_id": trip_id,
+        "item_name": item_name,
+        "status": status
+    }
+
+    packing_list[item_id] = new_item
+    save_data(file_path, packing_list)
+    print("New item added to packing list successfully!")
