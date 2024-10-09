@@ -291,3 +291,29 @@ def view_expenses():
             print(f"Category: {details['category']}")
             print(f"Description: {details['description']}")
             print("")
+
+def edit_expense():
+    """Edits an existing expense in the expenses.json file."""
+    file_path = "expenses.json"
+    expenses = load_data(file_path)
+
+    expense_id = input("Enter the Expense ID to edit: ")
+
+    if expense_id in expenses:
+        print("Editing expense details. Leave blank to keep the current value.")
+        trip_id = input(f"Enter new Trip ID (current: {expenses[expense_id]['trip_id']}): ") or expenses[expense_id]['trip_id']
+        amount = input(f"Enter new amount (current: {expenses[expense_id]['amount']}): ") or expenses[expense_id]['amount']
+        category = input(f"Enter new category (current: {expenses[expense_id]['category']}): ") or expenses[expense_id]['category']
+        description = input(f"Enter new description (current: {expenses[expense_id]['description']}): ") or expenses[expense_id]['description']
+
+        expenses[expense_id] = {
+            "trip_id": trip_id,
+            "amount": amount,
+            "category": category,
+            "description": description
+        }
+
+        save_data(file_path, expenses)
+        print("Expense updated successfully!")
+    else:
+        print("Expense ID not found.")
