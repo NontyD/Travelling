@@ -252,3 +252,25 @@ def manage_expenses_menu():
             break
         else:
             print("Invalid option. Please choose again.")
+
+def add_expense():
+    """Adds a new expense to the expenses.json file."""
+    file_path = "expenses.json"
+    expenses = load_data(file_path)
+
+    expense_id = input("Enter expense ID: ")
+    trip_id = input("Enter the Trip ID: ")
+    amount = input("Enter the amount: ")
+    category = input("Enter the category (e.g., food, transport): ")
+    description = input("Enter a description: ")
+
+    new_expense = {
+        "trip_id": trip_id,
+        "amount": amount,
+        "category": category,
+        "description": description
+    }
+
+    expenses[expense_id] = new_expense
+    save_data(file_path, expenses)
+    print("New expense added successfully!")
