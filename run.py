@@ -34,7 +34,7 @@ def main_menu():
         elif choice == '3':
             manage_expenses_menu()
         elif choice == '4':
-            manage_packing_menu()
+            view_trip_summary()
         elif choice == '5':
             print("Exiting the application. Goodbye!")
             break
@@ -386,6 +386,29 @@ def delete_expense():
         print("Expense deleted successfully!")
     else:
         print("Expense ID not found.")
+
+def view_trip_summary():
+    """Displays a summary of a specific trip including itinerary and costs."""
+    file_path = "trips.json"
+    trips = load_data(file_path)
+
+    trip_id = input("Enter the Trip ID to view summary: ")
+
+    if trip_id in trips:
+        details = trips[trip_id]
+        print(f"\n--- Summary for Trip ID: {trip_id} ---")
+        print(f"Destination: {details['destination']}")
+        print(f"Start Date: {details['start_date']}")
+        print(f"End Date: {details['end_date']}")
+        # Assuming you have keys for itinerary and costs in the trip details
+        itinerary = details.get('itinerary', 'No itinerary available.')
+        costs = details.get('costs', 'No cost details available.')
+
+        print(f"Itinerary: {itinerary}")
+        print(f"Costs: {costs}")
+        print("")
+    else:
+        print("Trip ID not found.")
 
 if __name__ == "__main__":
     main_menu()
