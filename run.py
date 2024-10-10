@@ -22,7 +22,7 @@ def main_menu():
         print("1. Manage Trips")
         print("2. Manage Itinerary")
         print("3. Track Expenses")
-        print("4. Manage Packing List")
+        print("4. Summary")
         print("5. Exit")
 
         choice = input("Choose an option: ")
@@ -66,7 +66,6 @@ def manage_trips_menu():
             break
         else:
             print("Invalid option. Please choose again.")
-
 
 def create_trip():
     """Adds a new trip to the trips.json file with input validation."""
@@ -387,97 +386,6 @@ def delete_expense():
         print("Expense deleted successfully!")
     else:
         print("Expense ID not found.")
-
-# --- Packing List Management Functions ---
-def manage_packing_menu():
-    """Displays the menu for managing the packing list."""
-    while True:
-        print("\n--- Manage Packing List ---")
-        print("1. Add an Item to Packing List")
-        print("2. View Packing List")
-        print("3. Update Packing Item Status")
-        print("4. Delete a Packing Item")
-        print("5. Back to Main Menu")
-
-        choice = input("Choose an option: ")
-
-        if choice == '1':
-            add_packing_item()
-        elif choice == '2':
-            view_packing_list()
-        elif choice == '3':
-            update_packing_status()
-        elif choice == '4':
-            delete_packing_item()
-        elif choice == '5':
-            break
-        else:
-            print("Invalid option. Please choose again.")
-
-def add_packing_item():
-    """Adds a new item to the packing list."""
-    file_path = "packing_list.json"
-    packing_list = load_data(file_path)
-
-    item_id = input("Enter item ID: ")
-    trip_id = input("Enter the Trip ID: ")
-    item_name = input("Enter the item name: ")
-    status = input("Enter status (packed/not packed): ").lower()
-
-    new_item = {
-        "trip_id": trip_id,
-        "item_name": item_name,
-        "status": status
-    }
-
-    packing_list[item_id] = new_item
-    save_data(file_path, packing_list)
-    print("New item added to packing list successfully!")
-
-def view_packing_list():
-    """Displays all the items in the packing list."""
-    file_path = "packing_list.json"
-    packing_list = load_data(file_path)
-
-    if not packing_list:
-        print("No packing items found.")
-    else:
-        print("\n--- Packing List ---")
-        for item_id, details in packing_list.items():
-            print(f"Item ID: {item_id}")
-            print(f"Trip ID: {details['trip_id']}")
-            print(f"Item Name: {details['item_name']}")
-            print(f"Status: {details['status']}")
-            print("")
-
-def update_packing_status():
-    """Updates the status of a packing item."""
-    file_path = "packing_list.json"
-    packing_list = load_data(file_path)
-
-    item_id = input("Enter the Item ID to update: ")
-
-    if item_id in packing_list:
-        status = input("Enter new status (packed/not packed): ").lower()
-        packing_list[item_id]['status'] = status
-        save_data(file_path, packing_list)
-        print("Packing item status updated successfully!")
-    else:
-        print("Item ID not found.")
-
-def delete_packing_item():
-    """Deletes an item from the packing list."""
-    file_path = "packing_list.json"
-    packing_list = load_data(file_path)
-
-    item_id = input("Enter the Item ID to delete: ")
-
-    if item_id in packing_list:
-        del packing_list[item_id]
-        save_data(file_path, packing_list)
-        print("Packing item deleted successfully!")
-    else:
-        print("Item ID not found.")
 
 if __name__ == "__main__":
     main_menu()
