@@ -156,7 +156,9 @@ def view_trips():
             print(f"Destination: {details['destination']}")
             print(f"Start Date: {details['start_date']}")
             print(f"End Date: {details['end_date']}")
-            print(f"Budget: {details['budget']}")
+            # Check if 'budget' exists; if not, show 'N/A'
+            budget = details.get('budget', 'N/A')
+            print(f"Budget: {budget}")
             print("")
 
 def edit_trip():
