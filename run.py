@@ -162,28 +162,53 @@ def view_trips():
             print("")
 
 def edit_trip():
-    """Edits an existing trip in the trips.json file."""
+    """Edits an existing trip in the trips.json file with input validation."""
     file_path = "trips.json"
     trips = load_data(file_path)
 
-    trip_id = input("Enter the Trip ID to edit: ")
+    if not trips:
+        print("No trips found.")
+        return
 
-    if trip_id in trips:
-        print("Editing trip details. Leave blank to keep the current value.")
-        destination = input(f"Enter new destination (current: {trips[trip_id]['destination']}): ") or trips[trip_id]['destination']
-        start_date = input(f"Enter new start date (current: {trips[trip_id]['start_date']}): ") or trips[trip_id]['start_date']
-        end_date = input(f"Enter new end date (current: {trips[trip_id]['end_date']}): ") or trips[trip_id]['end_date']
-
-        trips[trip_id] = {
-            "destination": destination,
-            "start_date": start_date,
-            "end_date": end_date
-        }
-
-        save_data(file_path, trips)
-        print("Trip updated successfully!")
-    else:
+    trip_id = input("Enter the trip ID you want to edit: ").strip()
+    if trip_id not in trips:
         print("Trip ID not found.")
+        return
+
+    # Display current trip details
+    trip = trips[trip_id]
+    print("\n--- Current Trip Details ---")
+    print(f"Destination: {trip['destination']}")
+    print(f"Start Date: {trip['start_date']}")
+    print(f"End Date: {trip['end_date']}")
+    print(f"Budget: {trip.get('budget', 'N/A')}")
+
+    # Edit destination
+    new_destination = input("Enter new destination (leave blank to keep current): ").strip()
+    if new_destination:
+        trip['destination'] = new_destination
+
+    # Edit start date
+    new_start_date = input("Enter new start date (YYYY-MM-DD) (leave blank to keep current): ").strip()
+    if new_start_date and validate_date_format(new_start_date):
+        trip['start_date'] = new_start_date
+
+    # Edit end date
+    new_end_date = input("Enter new end date (YYYY-MM-DD) (leave blank to keep current): ").strip()
+    if new_end_date and validate_date_format(new_end_date) and validate_date_order(trip['start_date'], new_end_date):
+        trip['end_date'] = new_end_date
+
+    # Edit budget
+    new_budget = input("Enter new budget (leave blank to keep current): ").strip()
+    if new_budget:
+        try:
+            trip['budget'] = float(new_budget)
+        except ValueError:
+            print("Invalid budget. Please enter a valid number.")
+
+    trips[trip_id] = trip
+    save_data(file_path, trips)
+    print("Trip updated successfully!")
 
 def delete_trip():
     """Deletes a trip from the trips.json file."""

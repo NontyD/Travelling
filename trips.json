@@ -2,7 +2,8 @@
     "1": {
         "destination": "Dublin",
         "start_date": "2024-10-20",
-        "end_date": "2024-10-25"
+        "end_date": "2024-10-25",
+        "budget": 250.0
     },
     "5": {
         "destination": "Work",
