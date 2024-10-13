@@ -34,7 +34,7 @@ def main_menu():
         elif choice == '3':
             manage_expenses_menu()
         elif choice == '4':
-            view_trip_summary()
+            show_summary()
         elif choice == '5':
             print("Exiting the application. Goodbye!")
             break
@@ -387,28 +387,55 @@ def delete_expense():
     else:
         print("Expense ID not found.")
 
-def view_trip_summary():
+
     """Displays a summary of a specific trip including itinerary and costs."""
-    file_path = "trips.json"
-    trips = load_data(file_path)
+    
+import pandas as pd
 
-    trip_id = input("Enter the Trip ID to view summary: ")
+def show_summary():
+    # Load the JSON data into DataFrames
+    trips_df = pd.read_json('trips.json').T
+    itinerary_df = pd.read_json('itinerary.json').T
+    expenses_df = pd.read_json('expenses.json').T
 
-    if trip_id in trips:
-        details = trips[trip_id]
-        print(f"\n--- Summary for Trip ID: {trip_id} ---")
-        print(f"Destination: {details['destination']}")
-        print(f"Start Date: {details['start_date']}")
-        print(f"End Date: {details['end_date']}")
-        # Assuming you have keys for itinerary and costs in the trip details
-        itinerary = details.get('itinerary', 'No itinerary available.')
-        costs = details.get('costs', 'No cost details available.')
+    # Convert trip_id to string in all DataFrames to match the type
+    trips_df.index = trips_df.index.astype(str)
+    itinerary_df['trip_id'] = itinerary_df['trip_id'].astype(str)
+    expenses_df['trip_id'] = expenses_df['trip_id'].astype(str)
 
-        print(f"Itinerary: {itinerary}")
-        print(f"Costs: {costs}")
-        print("")
-    else:
-        print("Trip ID not found.")
+    # Merge the DataFrames
+    merged_df = pd.merge(trips_df, itinerary_df, left_index=True, right_on='trip_id', how='left')
+    final_df = pd.merge(merged_df, expenses_df, on='trip_id', how='left')
+
+    # Rename columns for clarity
+    final_df.rename(columns={
+        'trip_id': 'Trip ID',
+        'destination': 'Destination',
+        'start_date': 'Start Date',
+        'end_date': 'End Date',
+        'date': 'Activity Date',
+        'activity': 'Activity',
+        'amount': 'Expense Amount',
+        'category': 'Expense Category',
+        'description': 'Expense Description'
+    }, inplace=True)
+
+    # Display the summary in a vertical format
+    print("\n--- Trip Summary ---")
+    for index, row in final_df.iterrows():
+        print("\n------------------------------")
+        print(f"Trip ID: {row['Trip ID']}")
+        print(f"Destination: {row['Destination']}")
+        print(f"Start Date: {row['Start Date']}")
+        print(f"End Date: {row['End Date']}")
+        print(f"Activity Date: {row['Activity Date'] if pd.notna(row['Activity Date']) else 'N/A'}")
+        print(f"Activity: {row['Activity'] if pd.notna(row['Activity']) else 'N/A'}")
+        print(f"Expense Amount: {row['Expense Amount'] if pd.notna(row['Expense Amount']) else 'N/A'}")
+        print(f"Expense Category: {row['Expense Category'] if pd.notna(row['Expense Category']) else 'N/A'}")
+        print(f"Expense Description: {row['Expense Description'] if pd.notna(row['Expense Description']) else 'N/A'}")
+        print("------------------------------")
+
+    print("\n")
 
 if __name__ == "__main__":
     main_menu()
