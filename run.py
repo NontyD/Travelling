@@ -104,10 +104,24 @@ def create_trip():
         else:
             print("Invalid date format. Please enter the date as YYYY-MM-DD.")
 
+    # Validate budget
+    while True:
+        budget = input("Enter budget amount: ").strip()
+        try:
+            budget = float(budget)
+            if budget >= 0:
+                break
+            else:
+                print("Budget must be a non-negative number.")
+        except ValueError:
+            print("Invalid input. Please enter a valid number for the budget.")
+
+    # Create new trip
     new_trip = {
         "destination": destination,
         "start_date": start_date,
-        "end_date": end_date
+        "end_date": end_date,
+        "budget": budget
     }
 
     trips[trip_id] = new_trip
@@ -142,6 +156,7 @@ def view_trips():
             print(f"Destination: {details['destination']}")
             print(f"Start Date: {details['start_date']}")
             print(f"End Date: {details['end_date']}")
+            print(f"Budget: {details['budget']}")
             print("")
 
 def edit_trip():
@@ -420,19 +435,41 @@ def show_summary():
         'description': 'Expense Description'
     }, inplace=True)
 
+    # Convert 'Expense Amount' to numeric to enable calculations
+    final_df['Expense Amount'] = pd.to_numeric(final_df['Expense Amount'], errors='coerce')
+
     # Display the summary in a vertical format
     print("\n--- Trip Summary ---")
-    for index, row in final_df.iterrows():
+    for trip_id, trip_data in trips_df.iterrows():
         print("\n------------------------------")
-        print(f"Trip ID: {row['Trip ID']}")
-        print(f"Destination: {row['Destination']}")
-        print(f"Start Date: {row['Start Date']}")
-        print(f"End Date: {row['End Date']}")
-        print(f"Activity Date: {row['Activity Date'] if pd.notna(row['Activity Date']) else 'N/A'}")
-        print(f"Activity: {row['Activity'] if pd.notna(row['Activity']) else 'N/A'}")
-        print(f"Expense Amount: {row['Expense Amount'] if pd.notna(row['Expense Amount']) else 'N/A'}")
-        print(f"Expense Category: {row['Expense Category'] if pd.notna(row['Expense Category']) else 'N/A'}")
-        print(f"Expense Description: {row['Expense Description'] if pd.notna(row['Expense Description']) else 'N/A'}")
+        print(f"Trip ID: {trip_id}")
+        print(f"Destination: {trip_data['destination']}")
+        print(f"Start Date: {trip_data['start_date']}")
+        print(f"End Date: {trip_data['end_date']}")
+        print(f"Budget: {trip_data['budget']}")
+
+        # Filter expenses for the current trip
+        trip_expenses = final_df[final_df['Trip ID'] == trip_id]
+
+        # Calculate total expenses for the trip
+        total_expenses = trip_expenses['Expense Amount'].sum()
+        print(f"Total Expenses: {total_expenses}")
+
+        # Compare total expenses with the budget
+        if pd.notna(trip_data['budget']):
+            remaining_budget = trip_data['budget'] - total_expenses
+            print(f"Remaining Budget: {remaining_budget}")
+        else:
+            print("Budget: N/A")
+
+        # Display each expense and activity
+        for _, row in trip_expenses.iterrows():
+            print("\nActivity Date: ", row['Activity Date'] if pd.notna(row['Activity Date']) else 'N/A')
+            print("Activity: ", row['Activity'] if pd.notna(row['Activity']) else 'N/A')
+            print("Expense Amount: ", row['Expense Amount'] if pd.notna(row['Expense Amount']) else 'N/A')
+            print("Expense Category: ", row['Expense Category'] if pd.notna(row['Expense Category']) else 'N/A')
+            print("Expense Description: ", row['Expense Description'] if pd.notna(row['Expense Description']) else 'N/A')
+
         print("------------------------------")
 
     print("\n")

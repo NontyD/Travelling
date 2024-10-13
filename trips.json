@@ -8,5 +8,11 @@
         "destination": "Work",
         "start_date": "1111-12-24",
         "end_date": "2024-12-24"
+    },
+    "2": {
+        "destination": "Paris",
+        "start_date": "2024-12-30",
+        "end_date": "2025-01-10",
+        "budget": 500.0
     }
 }
