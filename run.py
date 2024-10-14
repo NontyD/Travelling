@@ -2,6 +2,14 @@ import json
 import os
 import re
 from datetime import datetime
+import pyfiglet
+from rich.console import Console
+
+def display_heading():
+    console = Console()
+    # Generate a large ASCII art version of the heading
+    ascii_banner = pyfiglet.figlet_format("Welcome to Your Travel Planner!")
+    console.print(f"\n✈ [bold blue]{ascii_banner}[/bold blue] ✈\n")
 
 def load_data(file_path):
     """Loads data from a JSON file."""
@@ -16,30 +24,17 @@ def save_data(file_path, data):
         json.dump(data, file, indent=4)
 
 def main_menu():
-    """Displays the main menu and routes to different modules."""
-    while True:
-        print("\n--- Travel Itinerary Planner ---")
-        print("1. Manage Trips")
-        print("2. Manage Itinerary")
-        print("3. Track Expenses")
-        print("4. Summary")
-        print("5. Exit")
+    display_heading()
+    print("--- Main Menu ---")
+    print("1. Manage Trips")
+    print("2. Manage Itinerary")
+    print("3. Track Expenses")
+    print("4. Summary")
+    print("5. Exit")
+    choice = input("Choose an option: ")
+    return choice
 
-        choice = input("Choose an option: ")
-
-        if choice == '1':
-            manage_trips_menu()
-        elif choice == '2':
-            manage_itinerary_menu()
-        elif choice == '3':
-            manage_expenses_menu()
-        elif choice == '4':
-            show_summary()
-        elif choice == '5':
-            print("Exiting the application. Goodbye!")
-            break
-        else:
-            print("Invalid option. Please choose again.")
+        
 
 # --- Trip Management Functions ---
 def manage_trips_menu():
