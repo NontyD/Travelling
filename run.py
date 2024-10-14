@@ -8,7 +8,7 @@ from rich.console import Console
 def display_heading():
     console = Console()
     # Generate a large ASCII art version of the heading
-    ascii_banner = pyfiglet.figlet_format("Travel Planner!")
+    ascii_banner = pyfiglet.figlet_format("Travel Planner!", font="slant")
     console.print(f"\n✈ [bold blue]{ascii_banner}[/bold blue] ✈\n")
 
 def load_data(file_path):
