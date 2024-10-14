@@ -24,17 +24,30 @@ def save_data(file_path, data):
         json.dump(data, file, indent=4)
 
 def main_menu():
-    display_heading()
-    print("--- Main Menu ---")
-    print("1. Manage Trips")
-    print("2. Manage Itinerary")
-    print("3. Track Expenses")
-    print("4. Summary")
-    print("5. Exit")
-    choice = input("Choose an option: ")
-    return choice
+    while True:  # Keep the main menu running
+        display_heading()  # Display the heading each time the menu is shown
+        print("--- Main Menu ---")
+        print("1. Manage Trips")
+        print("2. Manage Itinerary")
+        print("3. Track Expenses")
+        print("4. Summary")
+        print("5. Exit")    
+        choice = input("Choose an option: ")
 
-        
+        if choice == '1':
+            manage_trips_menu()
+        elif choice == '2':
+            manage_itinerary_menu()
+        elif choice == '3':
+            manage_expenses_menu()
+        elif choice == '4':
+            show_summary()
+        elif choice == '5':
+            print("Exiting...")
+            break  # Exit the while loop to end the program
+        else:
+            print("Invalid option. Please choose again.")
+                
 
 # --- Trip Management Functions ---
 def manage_trips_menu():
@@ -497,4 +510,5 @@ def show_summary():
     print("\n")
 
 if __name__ == "__main__":
+    
     main_menu()
