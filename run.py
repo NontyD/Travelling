@@ -5,75 +5,82 @@ from datetime import datetime
 import pyfiglet
 from rich.console import Console
 
+# Create a single console instance for the entire module
+console = Console()
+
+def print_success(message):
+    console.print(message, style="bold green")
+
+def print_warning(message):
+    console.print(message, style="bold yellow")
+
+def print_error(message):
+    console.print(message, style="bold red")
+
 def display_heading():
-    console = Console()
-    # Generate a large ASCII art version of the heading
+    # Use the global console instance
     ascii_banner = pyfiglet.figlet_format("Travel Planner!", font="mini")
     console.print(f"\n✈ [bold blue]{ascii_banner}[/bold blue] ✈\n")
 
-def load_data(file_path):
-    """Loads data from a JSON file."""
-    if os.path.exists(file_path):
-        with open(file_path, "r") as file:
-            return json.load(file)
-    return {}
-
-def save_data(file_path, data):
-    """Saves data to a JSON file."""
-    with open(file_path, "w") as file:
-        json.dump(data, file, indent=4)
-
 def main_menu():
-    while True:  # Keep the main menu running
-        display_heading()  # Display the heading each time the menu is shown
-        print("--- Main Menu ---")
-        print("1. Manage Trips")
-        print("2. Manage Itinerary")
-        print("3. Track Expenses")
-        print("4. Summary")
-        print("5. Exit")    
-        choice = input("Choose an option: ")
+    while True:
+        display_heading()
+        console.print("--- Main Menu ---", style="bold cyan")
+        console.print("1. Manage Trips", style="cyan")
+        console.print("2. Manage Itinerary", style="cyan")
+        console.print("3. Track Expenses", style="cyan")
+        console.print("4. Summary", style="cyan")
+        console.print("5. Exit", style="cyan")
+        choice = input("Choose an option: ")    
 
         if choice == '1':
+            print_success("Navigating to Manage Trips Menu...")
             manage_trips_menu()
         elif choice == '2':
+            print_success("Navigating to Manage Itinerary Menu...")
             manage_itinerary_menu()
         elif choice == '3':
+            print_success("Navigating to Track Expenses Menu...")
             manage_expenses_menu()
         elif choice == '4':
-            show_summary()
+            print_success("Navigating to Summary...")
         elif choice == '5':
-            print("Exiting...")
-            break  # Exit the while loop to end the program
+            print_success("Exiting...")
+            break
         else:
-            print("Invalid option. Please choose again.")
-                
+            print_error("Invalid option. Please choose again.")
+
 
 # --- Trip Management Functions ---
 def manage_trips_menu():
     """Displays the menu for managing trips."""
     while True:
-        print("\n--- Manage Trips ---")
-        print("1. Add a New Trip")
-        print("2. View All Trips")
-        print("3. Edit a Trip")
-        print("4. Delete a Trip")
-        print("5. Back to Main Menu")
+        console.print("\n--- Manage Trips ---", style="bold cyan")
+        console.print("1. Add a New Trip", style="cyan")
+        console.print("2. View All Trips", style="cyan")
+        console.print("3. Edit a Trip", style="cyan")
+        console.print("4. Delete a Trip", style="cyan")
+        console.print("5. Back to Main Menu", style="cyan")
 
         choice = input("Choose an option: ")
 
         if choice == '1':
+            print_success("Adding a new trip...")
             create_trip()
         elif choice == '2':
+            print_success("Viewing all trips...")
             view_trips()
         elif choice == '3':
+            print_success("Editing a trip...")
             edit_trip()
         elif choice == '4':
+            print_success("Deleting a trip...")
             delete_trip()
         elif choice == '5':
+            print_success("Returning to Main Menu...")
             break
         else:
-            print("Invalid option. Please choose again.")
+            print_error("Invalid option. Please choose again.")
 
 def create_trip():
     """Adds a new trip to the trips.json file with input validation."""
