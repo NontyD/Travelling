@@ -22,6 +22,18 @@ def display_heading():
     ascii_banner = pyfiglet.figlet_format("Travel Planner!", font="mini")
     console.print(f"\n✈ [bold blue]{ascii_banner}[/bold blue] ✈\n")
 
+def load_data(file_path):
+    """Loads data from a JSON file."""
+    if os.path.exists(file_path):
+        with open(file_path, "r") as file:
+            return json.load(file)
+    return {}
+
+def save_data(file_path, data):
+    """Saves data to a JSON file."""
+    with open(file_path, "w") as file:
+        json.dump(data, file, indent=4)
+
 def main_menu():
     while True:
         display_heading()
@@ -92,12 +104,12 @@ def create_trip():
         trip_id = input("Enter trip ID: ").strip()
         if trip_id and trip_id not in trips:
             break
-        print("Invalid trip ID or trip ID already exists. Please try again.")
+        print_error("Invalid trip ID or trip ID already exists. Please try again.")
 
     # Validate destination
     destination = input("Enter destination: ").strip()
     while not destination:
-        print("Destination cannot be empty.")
+        print_error("Destination cannot be empty.")
         destination = input("Enter destination: ").strip()
 
     # Validate start date
@@ -105,19 +117,18 @@ def create_trip():
         start_date = input("Enter start date (YYYY-MM-DD): ").strip()
         if validate_date_format(start_date):
             break
-        print("Invalid date format. Please enter the date as YYYY-MM-DD.")
+        print_error("Invalid date format. Please enter the date as YYYY-MM-DD.")
 
     # Validate end date
     while True:
         end_date = input("Enter end date (YYYY-MM-DD): ").strip()
         if validate_date_format(end_date):
-            # Ensure the end date is after the start date
             if validate_date_order(start_date, end_date):
                 break
             else:
-                print("End date must be after the start date.")
+                print_error("End date must be after the start date.")
         else:
-            print("Invalid date format. Please enter the date as YYYY-MM-DD.")
+            print_error("Invalid date format. Please enter the date as YYYY-MM-DD.")
 
     # Validate budget
     while True:
@@ -127,9 +138,9 @@ def create_trip():
             if budget >= 0:
                 break
             else:
-                print("Budget must be a non-negative number.")
+                print_error("Budget must be a non-negative number.")
         except ValueError:
-            print("Invalid input. Please enter a valid number for the budget.")
+            print_error("Invalid input. Please enter a valid number for the budget.")
 
     # Create new trip
     new_trip = {
@@ -141,7 +152,7 @@ def create_trip():
 
     trips[trip_id] = new_trip
     save_data(file_path, trips)
-    print("New trip added successfully!")
+    print_success("New trip added successfully!")
 
 def validate_date_format(date_str):
     """Validates if the given date string matches the YYYY-MM-DD format."""
@@ -163,18 +174,17 @@ def view_trips():
     trips = load_data(file_path)
 
     if not trips:
-        print("No trips found.")
+        print_warning("No trips found.")
     else:
-        print("\n--- All Trips ---")
+        console.print("\n--- All Trips ---", style="bold cyan")
         for trip_id, details in trips.items():
-            print(f"Trip ID: {trip_id}")
-            print(f"Destination: {details['destination']}")
-            print(f"Start Date: {details['start_date']}")
-            print(f"End Date: {details['end_date']}")
-            # Check if 'budget' exists; if not, show 'N/A'
+            console.print(f"Trip ID: {trip_id}", style="cyan")
+            console.print(f"Destination: {details['destination']}", style="cyan")
+            console.print(f"Start Date: {details['start_date']}", style="cyan")
+            console.print(f"End Date: {details['end_date']}", style="cyan")
             budget = details.get('budget', 'N/A')
-            print(f"Budget: {budget}")
-            print("")
+            console.print(f"Budget: {budget}", style="cyan")
+            console.print("")
 
 def edit_trip():
     """Edits an existing trip in the trips.json file with input validation."""
@@ -182,21 +192,21 @@ def edit_trip():
     trips = load_data(file_path)
 
     if not trips:
-        print("No trips found.")
+        print_warning("No trips found.")
         return
 
     trip_id = input("Enter the trip ID you want to edit: ").strip()
     if trip_id not in trips:
-        print("Trip ID not found.")
+        print_error("Trip ID not found.")
         return
 
     # Display current trip details
     trip = trips[trip_id]
-    print("\n--- Current Trip Details ---")
-    print(f"Destination: {trip['destination']}")
-    print(f"Start Date: {trip['start_date']}")
-    print(f"End Date: {trip['end_date']}")
-    print(f"Budget: {trip.get('budget', 'N/A')}")
+    console.print("\n--- Current Trip Details ---", style="bold cyan")
+    console.print(f"Destination: {trip['destination']}", style="cyan")
+    console.print(f"Start Date: {trip['start_date']}", style="cyan")
+    console.print(f"End Date: {trip['end_date']}", style="cyan")
+    console.print(f"Budget: {trip.get('budget', 'N/A')}", style="cyan")
 
     # Edit destination
     new_destination = input("Enter new destination (leave blank to keep current): ").strip()
@@ -219,11 +229,11 @@ def edit_trip():
         try:
             trip['budget'] = float(new_budget)
         except ValueError:
-            print("Invalid budget. Please enter a valid number.")
+            print_error("Invalid budget. Please enter a valid number.")
 
     trips[trip_id] = trip
     save_data(file_path, trips)
-    print("Trip updated successfully!")
+    print_success("Trip updated successfully!")
 
 def delete_trip():
     """Deletes a trip from the trips.json file."""
@@ -235,120 +245,21 @@ def delete_trip():
     if trip_id in trips:
         del trips[trip_id]
         save_data(file_path, trips)
-        print("Trip deleted successfully!")
+        print_success("Trip deleted successfully!")
     else:
-        print("Trip ID not found.")
-
-# --- Itinerary Management Functions ---
-def manage_itinerary_menu():
-    """Displays the menu for managing the itinerary."""
-    while True:
-        print("\n--- Manage Itinerary ---")
-        print("1. Add an Itinerary Item")
-        print("2. View Itinerary")
-        print("3. Edit an Itinerary Item")
-        print("4. Delete an Itinerary Item")
-        print("5. Back to Main Menu")
-
-        choice = input("Choose an option: ")
-
-        if choice == '1':
-            add_itinerary_item()
-        elif choice == '2':
-            view_itinerary()
-        elif choice == '3':
-            edit_itinerary_item()
-        elif choice == '4':
-            delete_itinerary_item()
-        elif choice == '5':
-            break
-        else:
-            print("Invalid option. Please choose again.")
-
-def add_itinerary_item():
-    """Adds an itinerary item to the itinerary.json file."""
-    file_path = "itinerary.json"
-    itinerary = load_data(file_path)
-
-    item_id = input("Enter item ID: ")
-    trip_id = input("Enter the Trip ID: ")
-    date = input("Enter date (YYYY-MM-DD): ")
-    activity = input("Enter activity: ")
-
-    new_item = {
-        "trip_id": trip_id,
-        "date": date,
-        "activity": activity
-    }
-
-    itinerary[item_id] = new_item
-    save_data(file_path, itinerary)
-    print("New itinerary item added successfully!")
-
-def view_itinerary():
-    """Displays all itinerary items."""
-    file_path = "itinerary.json"
-    itinerary = load_data(file_path)
-
-    if not itinerary:
-        print("No itinerary items found.")
-    else:
-        print("\n--- Itinerary ---")
-        for item_id, details in itinerary.items():
-            print(f"Item ID: {item_id}")
-            print(f"Trip ID: {details['trip_id']}")
-            print(f"Date: {details['date']}")
-            print(f"Activity: {details['activity']}")
-            print("")
-
-def edit_itinerary_item():
-    """Edits an existing itinerary item."""
-    file_path = "itinerary.json"
-    itinerary = load_data(file_path)
-
-    item_id = input("Enter the Item ID to edit: ")
-
-    if item_id in itinerary:
-        print("Editing itinerary item details. Leave blank to keep the current value.")
-        trip_id = input(f"Enter new Trip ID (current: {itinerary[item_id]['trip_id']}): ") or itinerary[item_id]['trip_id']
-        date = input(f"Enter new date (current: {itinerary[item_id]['date']}): ") or itinerary[item_id]['date']
-        activity = input(f"Enter new activity (current: {itinerary[item_id]['activity']}): ") or itinerary[item_id]['activity']
-
-        itinerary[item_id] = {
-            "trip_id": trip_id,
-            "date": date,
-            "activity": activity
-        }
-
-        save_data(file_path, itinerary)
-        print("Itinerary item updated successfully!")
-    else:
-        print("Item ID not found.")
-
-def delete_itinerary_item():
-    """Deletes an itinerary item."""
-    file_path = "itinerary.json"
-    itinerary = load_data(file_path)
-
-    item_id = input("Enter the Item ID to delete: ")
-
-    if item_id in itinerary:
-        del itinerary[item_id]
-        save_data(file_path, itinerary)
-        print("Itinerary item deleted successfully!")
-    else:
-        print("Item ID not found.")
+        print_error("Trip ID not found.")
 
 # --- Expenses Management Functions ---
+
 def manage_expenses_menu():
     """Displays the menu for managing expenses."""
     while True:
-        print("\n--- Manage Expenses ---")
-        print("1. Add an Expense")
-        print("2. View All Expenses")
-        print("3. Edit an Expense")
-        print("4. Delete an Expense")
-        print("5. Back to Main Menu")
+        console.print("\n--- Manage Expenses ---", style="bold green")
+        console.print("1. Add an Expense", style="bold")
+        console.print("2. View All Expenses", style="bold")
+        console.print("3. Edit an Expense", style="bold")
+        console.print("4. Delete an Expense", style="bold")
+        console.print("5. Back to Main Menu", style="bold")
 
         choice = input("Choose an option: ")
 
@@ -363,18 +274,53 @@ def manage_expenses_menu():
         elif choice == '5':
             break
         else:
-            print("Invalid option. Please choose again.")
+            console.print("[red]Invalid option. Please choose again.[/red]")
 
 def add_expense():
     """Adds a new expense to the expenses.json file."""
     file_path = "expenses.json"
+    trips_path = "trips.json"
     expenses = load_data(file_path)
+    trips = load_data(trips_path)
 
-    expense_id = input("Enter expense ID: ")
-    trip_id = input("Enter the Trip ID: ")
-    amount = input("Enter the amount: ")
-    category = input("Enter the category (e.g., food, transport): ")
-    description = input("Enter a description: ")
+    # Validate expense ID
+    while True:
+        try:
+            expense_id = int(input("Enter expense ID (must be greater than 0): ").strip())
+            if expense_id > 0 and str(expense_id) not in expenses:
+                break
+            console.print("[red]Invalid expense ID or ID already exists. Please try again.[/red]")
+        except ValueError:
+            console.print("[red]Invalid input. Please enter a numeric ID greater than 0.[/red]")
+
+    # Validate trip ID
+    while True:
+        trip_id = input("Enter the Trip ID: ").strip()
+        if trip_id in trips:
+            break
+        console.print("[red]Trip ID not found. Please enter a valid Trip ID that already exists.[/red]")
+
+    # Validate amount
+    while True:
+        try:
+            amount = float(input("Enter the amount: ").strip())
+            if amount >= 0:
+                break
+            console.print("[red]Amount must be a non-negative number.[/red]")
+        except ValueError:
+            console.print("[red]Invalid input. Please enter a valid number for the amount.[/red]")
+
+    # Validate category
+    category = input("Enter the category (e.g., food, transport): ").strip()
+    while not category:
+        console.print("[red]Category cannot be empty.[/red]")
+        category = input("Enter the category (e.g., food, transport): ").strip()
+
+    # Validate description
+    description = input("Enter a description: ").strip()
+    while not description:
+        console.print("[red]Description cannot be empty.[/red]")
+        description = input("Enter a description: ").strip()
 
     new_expense = {
         "trip_id": trip_id,
@@ -383,9 +329,9 @@ def add_expense():
         "description": description
     }
 
-    expenses[expense_id] = new_expense
+    expenses[str(expense_id)] = new_expense
     save_data(file_path, expenses)
-    print("New expense added successfully!")
+    print_success("New expense added successfully!")
 
 def view_expenses():
     """Displays all the expenses saved in the expenses.json file."""
@@ -393,30 +339,38 @@ def view_expenses():
     expenses = load_data(file_path)
 
     if not expenses:
-        print("No expenses found.")
+        print_warning("No expenses found.")
     else:
-        print("\n--- All Expenses ---")
+        console.print("\n--- All Expenses ---", style="bold green")
         for expense_id, details in expenses.items():
-            print(f"Expense ID: {expense_id}")
-            print(f"Trip ID: {details['trip_id']}")
-            print(f"Amount: {details['amount']}")
-            print(f"Category: {details['category']}")
-            print(f"Description: {details['description']}")
-            print("")
+            console.print(f"Expense ID: {expense_id}", style="bold")
+            console.print(f"Trip ID: {details['trip_id']}")
+            console.print(f"Amount: {details['amount']}")
+            console.print(f"Category: {details['category']}")
+            console.print(f"Description: {details['description']}\n")
 
 def edit_expense():
     """Edits an existing expense in the expenses.json file."""
     file_path = "expenses.json"
     expenses = load_data(file_path)
 
-    expense_id = input("Enter the Expense ID to edit: ")
+    expense_id = input("Enter the Expense ID to edit: ").strip()
 
     if expense_id in expenses:
-        print("Editing expense details. Leave blank to keep the current value.")
-        trip_id = input(f"Enter new Trip ID (current: {expenses[expense_id]['trip_id']}): ") or expenses[expense_id]['trip_id']
-        amount = input(f"Enter new amount (current: {expenses[expense_id]['amount']}): ") or expenses[expense_id]['amount']
-        category = input(f"Enter new category (current: {expenses[expense_id]['category']}): ") or expenses[expense_id]['category']
-        description = input(f"Enter new description (current: {expenses[expense_id]['description']}): ") or expenses[expense_id]['description']
+        console.print("Editing expense details. Leave blank to keep the current value.", style="bold yellow")
+        trip_id = input(f"Enter new Trip ID (current: {expenses[expense_id]['trip_id']}): ").strip() or expenses[expense_id]['trip_id']
+        amount = input(f"Enter new amount (current: {expenses[expense_id]['amount']}): ").strip()
+        if amount:
+            try:
+                amount = float(amount)
+            except ValueError:
+                print_error("Invalid input. Keeping the current amount.")
+                amount = expenses[expense_id]['amount']
+        else:
+            amount = expenses[expense_id]['amount']
+
+        category = input(f"Enter new category (current: {expenses[expense_id]['category']}): ").strip() or expenses[expense_id]['category']
+        description = input(f"Enter new description (current: {expenses[expense_id]['description']}): ").strip() or expenses[expense_id]['description']
 
         expenses[expense_id] = {
             "trip_id": trip_id,
@@ -426,23 +380,23 @@ def edit_expense():
         }
 
         save_data(file_path, expenses)
-        print("Expense updated successfully!")
+        print_success("Expense updated successfully!")
     else:
-        print("Expense ID not found.")
+        print_error("Expense ID not found.")
 
 def delete_expense():
     """Deletes an expense from the expenses.json file."""
     file_path = "expenses.json"
     expenses = load_data(file_path)
 
-    expense_id = input("Enter the Expense ID to delete: ")
+    expense_id = input("Enter the Expense ID to delete: ").strip()
 
     if expense_id in expenses:
         del expenses[expense_id]
         save_data(file_path, expenses)
-        print("Expense deleted successfully!")
+        print_success("Expense deleted successfully!")
     else:
-        print("Expense ID not found.")
+        print_error("Expense ID not found.")
 
 
     """Displays a summary of a specific trip including itinerary and costs."""

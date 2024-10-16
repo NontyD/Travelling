@@ -4,5 +4,17 @@
         "amount": "50",
         "category": "Food",
         "description": "Fish and chips"
+    },
+    "0": {
+        "trip_id": "0",
+        "amount": 10.0,
+        "category": "food",
+        "description": "sdss"
+    },
+    "2": {
+        "trip_id": "3",
+        "amount": 100.0,
+        "category": "food",
+        "description": "food"
     }
 }
