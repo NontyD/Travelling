@@ -249,6 +249,167 @@ def delete_trip():
     else:
         print_error("Trip ID not found.")
 
+# --- Itinerary Management Functions ---
+def manage_itinerary_menu():
+    """Displays the menu for managing itineraries."""
+    while True:
+        print_success("\n--- Manage Itineraries ---")
+        print("1. Add an Itinerary Entry")
+        print("2. View All Itineraries")
+        print("3. Edit an Itinerary Entry")
+        print("4. Delete an Itinerary Entry")
+        print("5. Back to Main Menu")
+
+        choice = input("Choose an option: ").strip()
+
+        if choice == '1':
+            add_itinerary_entry()
+        elif choice == '2':
+            view_itineraries()
+        elif choice == '3':
+            edit_itinerary_entry()
+        elif choice == '4':
+            delete_itinerary_entry()
+        elif choice == '5':
+            break
+        else:
+            print_warning("Invalid option. Please choose again.")
+
+def add_itinerary_entry():
+    """Adds a new itinerary entry to the itinerary.json file with input validation."""
+    file_path = "itinerary.json"
+    itinerary = load_data(file_path)
+
+    # Validate itinerary ID
+    while True:
+        itinerary_id = input("Enter itinerary ID: ").strip()
+        if itinerary_id.isdigit() and int(itinerary_id) > 0 and itinerary_id not in itinerary:
+            break
+        print_error("Invalid itinerary ID or ID already exists. Please try again.")
+
+    # Validate trip ID
+    trips = load_data("trips.json")
+    while True:
+        trip_id = input("Enter the Trip ID to associate: ").strip()
+        if trip_id in trips:
+            break
+        print_error("Trip ID not found. Please enter an existing Trip ID.")
+
+    # Fetch trip start and end dates for date validation
+    trip_start_date = datetime.strptime(trips[trip_id]['start_date'], "%Y-%m-%d")
+    trip_end_date = datetime.strptime(trips[trip_id]['end_date'], "%Y-%m-%d")
+
+    # Validate date
+    while True:
+        date = input("Enter date (YYYY-MM-DD): ").strip()
+        if validate_date_format(date):
+            itinerary_date = datetime.strptime(date, "%Y-%m-%d")
+            if trip_start_date <= itinerary_date <= trip_end_date:
+                break
+            print_error(f"Date must be within the trip duration ({trip_start_date.date()} to {trip_end_date.date()}).")
+        else:
+            print_error("Invalid date format. Please enter the date as YYYY-MM-DD.")
+
+    # Validate activity
+    activity = input("Enter activity: ").strip()
+    while not activity:
+        print_error("Activity cannot be empty.")
+        activity = input("Enter activity: ").strip()
+
+    # Create new itinerary entry
+    new_entry = {
+        "trip_id": trip_id,
+        "date": date,
+        "activity": activity
+    }
+
+    itinerary[itinerary_id] = new_entry
+    save_data(file_path, itinerary)
+    print_success("New itinerary entry added successfully!")
+
+def edit_itinerary_entry():
+    """Edits an existing itinerary entry in the itinerary.json file."""
+    file_path = "itinerary.json"
+    itinerary = load_data(file_path)
+
+    if not itinerary:
+        print_warning("No itineraries found.")
+        return
+
+    itinerary_id = input("Enter the Itinerary ID to edit: ").strip()
+    if itinerary_id in itinerary:
+        print_success("Editing itinerary details. Leave blank to keep the current value.")
+        entry = itinerary[itinerary_id]
+        trip_id = entry['trip_id']
+
+        # Fetch trip start and end dates for date validation
+        trips = load_data("trips.json")
+        trip_start_date = datetime.strptime(trips[trip_id]['start_date'], "%Y-%m-%d")
+        trip_end_date = datetime.strptime(trips[trip_id]['end_date'], "%Y-%m-%d")
+
+        date = input(f"Enter new date (YYYY-MM-DD) (current: {entry['date']}): ").strip()
+        if date:
+            if validate_date_format(date):
+                itinerary_date = datetime.strptime(date, "%Y-%m-%d")
+                if trip_start_date <= itinerary_date <= trip_end_date:
+                    entry['date'] = date
+                else:
+                    print_error(f"Date must be within the trip duration ({trip_start_date.date()} to {trip_end_date.date()}).")
+                    return
+            else:
+                print_error("Invalid date format. Please enter the date as YYYY-MM-DD.")
+                return
+
+        activity = input(f"Enter new activity (current: {entry['activity']}): ").strip() or entry['activity']
+
+        entry.update({"trip_id": trip_id, "date": entry['date'], "activity": activity})
+        save_data(file_path, itinerary)
+        print_success("Itinerary entry updated successfully!")
+    else:
+        print_error("Itinerary ID not found.")
+
+def validate_date_format(date_str):
+    """Validates if the given date string matches the YYYY-MM-DD format."""
+    try:
+        datetime.strptime(date_str, "%Y-%m-%d")
+        return True
+    except ValueError:
+        return False
+
+def view_itineraries():
+    """Displays all the itineraries saved in the itinerary.json file."""
+    file_path = "itinerary.json"
+    itinerary = load_data(file_path)
+
+    if not itinerary:
+        print_warning("No itineraries found.")
+    else:
+        print_success("\n--- All Itineraries ---")
+        for itinerary_id, details in itinerary.items():
+            print(f"Itinerary ID: {itinerary_id}")
+            print(f"Trip ID: {details['trip_id']}")
+            print(f"Date: {details['date']}")
+            print(f"Activity: {details['activity']}")
+            print("")
+
+def delete_itinerary_entry():
+    """Deletes an itinerary entry from the itinerary.json file."""
+    file_path = "itinerary.json"
+    itinerary = load_data(file_path)
+
+    if not itinerary:
+        print_warning("No itineraries found.")
+        return
+
+    itinerary_id = input("Enter the Itinerary ID to delete: ").strip()
+
+    if itinerary_id in itinerary:
+        del itinerary[itinerary_id]
+        save_data(file_path, itinerary)
+        print_success("Itinerary entry deleted successfully!")
+    else:
+        print_error("Itinerary ID not found.")
+
 # --- Expenses Management Functions ---
 
 def manage_expenses_menu():

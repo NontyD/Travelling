@@ -3,5 +3,20 @@
         "trip_id": "1",
         "date": "2024-10-20",
         "activity": "Go shopping"
+    },
+    "2": {
+        "trip_id": "2",
+        "date": "2024-12-12",
+        "activity": "run"
+    },
+    "3": {
+        "trip_id": "1",
+        "date": "2024-12-12",
+        "activity": "skip"
+    },
+    "5": {
+        "trip_id": "1",
+        "date": "2024-10-23",
+        "activity": "shop"
     }
 }
