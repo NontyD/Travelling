@@ -34,6 +34,9 @@ def save_data(file_path, data):
     with open(file_path, "w") as file:
         json.dump(data, file, indent=4)
 
+def manage_itinerary_menu():
+    pass
+
 def main_menu():
     while True:
         display_heading()
@@ -63,86 +66,81 @@ def main_menu():
             print_error("Invalid option. Please choose again.")
 
 
+from datetime import datetime
+
 # --- Trip Management Functions ---
+
 def manage_trips_menu():
     """Displays the menu for managing trips."""
     while True:
-        console.print("\n--- Manage Trips ---", style="bold cyan")
-        console.print("1. Add a New Trip", style="cyan")
-        console.print("2. View All Trips", style="cyan")
-        console.print("3. Edit a Trip", style="cyan")
-        console.print("4. Delete a Trip", style="cyan")
-        console.print("5. Back to Main Menu", style="cyan")
+        print("\n--- Manage Trips ---")
+        print("1. Add a New Trip")
+        print("2. View All Trips")
+        print("3. Edit a Trip")
+        print("4. Delete a Trip")
+        print("5. Back to Main Menu")
 
         choice = input("Choose an option: ")
 
         if choice == '1':
-            print_success("Adding a new trip...")
             create_trip()
         elif choice == '2':
-            print_success("Viewing all trips...")
             view_trips()
         elif choice == '3':
-            print_success("Editing a trip...")
             edit_trip()
         elif choice == '4':
-            print_success("Deleting a trip...")
             delete_trip()
         elif choice == '5':
-            print_success("Returning to Main Menu...")
             break
         else:
             print_error("Invalid option. Please choose again.")
 
 def create_trip():
-    """Adds a new trip to the trips.json file with input validation."""
+    """Creates a new trip entry and saves it to trips.json."""
     file_path = "trips.json"
     trips = load_data(file_path)
 
-    # Validate trip ID
+    # Prompt for a valid trip ID
     while True:
-        trip_id = input("Enter trip ID: ").strip()
-        if trip_id and trip_id not in trips:
-            break
-        print_error("Invalid trip ID or trip ID already exists. Please try again.")
+        trip_id = input("Enter trip ID: ")
 
-    # Validate destination
-    destination = input("Enter destination: ").strip()
-    while not destination:
-        print_error("Destination cannot be empty.")
-        destination = input("Enter destination: ").strip()
-
-    # Validate start date
-    while True:
-        start_date = input("Enter start date (YYYY-MM-DD): ").strip()
-        if validate_date_format(start_date):
-            break
-        print_error("Invalid date format. Please enter the date as YYYY-MM-DD.")
-
-    # Validate end date
-    while True:
-        end_date = input("Enter end date (YYYY-MM-DD): ").strip()
-        if validate_date_format(end_date):
-            if validate_date_order(start_date, end_date):
-                break
-            else:
-                print_error("End date must be after the start date.")
+        if not trip_id.isdigit() or int(trip_id) <= 0:
+            print_error("Invalid Trip ID. Must be a positive number.")
+        elif trip_id in trips:
+            print_error("Trip ID already exists. Please choose a different ID.")
         else:
-            print_error("Invalid date format. Please enter the date as YYYY-MM-DD.")
+            break  # Valid trip ID
 
-    # Validate budget
+    destination = input("Enter the destination: ")
+
+    # Prompt for a valid start date
     while True:
-        budget = input("Enter budget amount: ").strip()
-        try:
-            budget = float(budget)
-            if budget >= 0:
+        start_date = input("Enter the start date (YYYY-MM-DD): ")
+        if validate_date(start_date):
+            break
+        else:
+            print_error("Invalid start date. Must be today or a future date.")
+
+    # Prompt for a valid end date
+    while True:
+        end_date = input("Enter the end date (YYYY-MM-DD): ")
+        if validate_date(end_date):
+            # Check if the end date is after or the same as the start date
+            if datetime.strptime(end_date, "%Y-%m-%d") >= datetime.strptime(start_date, "%Y-%m-%d"):
                 break
             else:
-                print_error("Budget must be a non-negative number.")
-        except ValueError:
-            print_error("Invalid input. Please enter a valid number for the budget.")
+                print_error("End date cannot be earlier than the start date.")
+        else:
+            print_error("Invalid end date. Must be today or a future date.")
 
-    # Create new trip
+    # Prompt for a valid budget
+    while True:
+        budget = input("Enter the budget (positive number): ")
+        if validate_budget(budget):
+            break
+        else:
+            print_error("Invalid budget. Please enter a positive number.")
+
     new_trip = {
         "destination": destination,
         "start_date": start_date,
@@ -154,89 +152,77 @@ def create_trip():
     save_data(file_path, trips)
     print_success("New trip added successfully!")
 
-def validate_date_format(date_str):
-    """Validates if the given date string matches the YYYY-MM-DD format."""
-    try:
-        datetime.strptime(date_str, "%Y-%m-%d")
-        return True
-    except ValueError:
-        return False
-
-def validate_date_order(start_date, end_date):
-    """Validates that the end date is after the start date."""
-    start = datetime.strptime(start_date, "%Y-%m-%d")
-    end = datetime.strptime(end_date, "%Y-%m-%d")
-    return end > start
-
 def view_trips():
-    """Displays all trips saved in the trips.json file."""
+    """Displays all trips saved in trips.json."""
     file_path = "trips.json"
     trips = load_data(file_path)
 
     if not trips:
         print_warning("No trips found.")
     else:
-        console.print("\n--- All Trips ---", style="bold cyan")
+        print("\n--- All Trips ---")
         for trip_id, details in trips.items():
-            console.print(f"Trip ID: {trip_id}", style="cyan")
-            console.print(f"Destination: {details['destination']}", style="cyan")
-            console.print(f"Start Date: {details['start_date']}", style="cyan")
-            console.print(f"End Date: {details['end_date']}", style="cyan")
-            budget = details.get('budget', 'N/A')
-            console.print(f"Budget: {budget}", style="cyan")
-            console.print("")
+            # Retrieve budget or set a default if it doesn't exist
+            budget = details.get('budget', 'Not specified')
+            print(f"Trip ID: {trip_id}")
+            print(f"Destination: {details['destination']}")
+            print(f"Start Date: {details['start_date']}")
+            print(f"End Date: {details['end_date']}")
+            print(f"Budget: {budget}")
+            print("")
 
 def edit_trip():
-    """Edits an existing trip in the trips.json file with input validation."""
+    """Edits an existing trip in trips.json."""
     file_path = "trips.json"
     trips = load_data(file_path)
 
-    if not trips:
-        print_warning("No trips found.")
-        return
+    trip_id = input("Enter the Trip ID to edit: ")
 
-    trip_id = input("Enter the trip ID you want to edit: ").strip()
-    if trip_id not in trips:
+    if trip_id in trips:
+        print("Editing trip details. Leave blank to keep the current value.")
+        destination = input(f"Enter new destination (current: {trips[trip_id]['destination']}): ") or trips[trip_id]['destination']
+
+        # Validate and update the start date
+        while True:
+            start_date = input(f"Enter new start date (current: {trips[trip_id]['start_date']}): ") or trips[trip_id]['start_date']
+            if validate_date(start_date):
+                break
+            else:
+                print_error("Invalid start date. Must be today or a future date.")
+
+        # Validate and update the end date
+        while True:
+            end_date = input(f"Enter new end date (current: {trips[trip_id]['end_date']}): ") or trips[trip_id]['end_date']
+            if validate_date(end_date) and datetime.strptime(end_date, "%Y-%m-%d") >= datetime.strptime(start_date, "%Y-%m-%d"):
+                break
+            else:
+                print_error("Invalid end date. Must be today or a future date, and not before the start date.")
+
+        # Retrieve the current budget or set it to a default value if not available
+        current_budget = trips[trip_id].get('budget', '0.0')
+
+        # Validate and update the budget
+        while True:
+            budget = input(f"Enter new budget (current: {current_budget}): ") or current_budget
+            if validate_budget(budget):
+                break
+            else:
+                print_error("Invalid budget. Please enter a positive number.")
+
+        trips[trip_id] = {
+            "destination": destination,
+            "start_date": start_date,
+            "end_date": end_date,
+            "budget": budget
+        }
+
+        save_data(file_path, trips)
+        print_success("Trip updated successfully!")
+    else:
         print_error("Trip ID not found.")
-        return
-
-    # Display current trip details
-    trip = trips[trip_id]
-    console.print("\n--- Current Trip Details ---", style="bold cyan")
-    console.print(f"Destination: {trip['destination']}", style="cyan")
-    console.print(f"Start Date: {trip['start_date']}", style="cyan")
-    console.print(f"End Date: {trip['end_date']}", style="cyan")
-    console.print(f"Budget: {trip.get('budget', 'N/A')}", style="cyan")
-
-    # Edit destination
-    new_destination = input("Enter new destination (leave blank to keep current): ").strip()
-    if new_destination:
-        trip['destination'] = new_destination
-
-    # Edit start date
-    new_start_date = input("Enter new start date (YYYY-MM-DD) (leave blank to keep current): ").strip()
-    if new_start_date and validate_date_format(new_start_date):
-        trip['start_date'] = new_start_date
-
-    # Edit end date
-    new_end_date = input("Enter new end date (YYYY-MM-DD) (leave blank to keep current): ").strip()
-    if new_end_date and validate_date_format(new_end_date) and validate_date_order(trip['start_date'], new_end_date):
-        trip['end_date'] = new_end_date
-
-    # Edit budget
-    new_budget = input("Enter new budget (leave blank to keep current): ").strip()
-    if new_budget:
-        try:
-            trip['budget'] = float(new_budget)
-        except ValueError:
-            print_error("Invalid budget. Please enter a valid number.")
-
-    trips[trip_id] = trip
-    save_data(file_path, trips)
-    print_success("Trip updated successfully!")
-
+        
 def delete_trip():
-    """Deletes a trip from the trips.json file."""
+    """Deletes a trip from trips.json."""
     file_path = "trips.json"
     trips = load_data(file_path)
 
@@ -249,18 +235,45 @@ def delete_trip():
     else:
         print_error("Trip ID not found.")
 
+# --- Helper Functions ---
+
+def validate_date(date_str):
+    """Validates if the date is today or a future date."""
+    try:
+        date_obj = datetime.strptime(date_str, "%Y-%m-%d")
+        current_date = datetime.now().date()
+
+        if date_obj.date() >= current_date:
+            return True
+        else:
+            return False
+    except ValueError:
+        return False
+
+def validate_budget(budget_str):
+    """Validates if the budget is a positive number."""
+    try:
+        budget = float(budget_str)
+        if budget > 0:
+            return True
+        else:
+            return False
+    except ValueError:
+        return False
+
 # --- Itinerary Management Functions ---
+
 def manage_itinerary_menu():
     """Displays the menu for managing itineraries."""
     while True:
-        print_success("\n--- Manage Itineraries ---")
+        print("\n--- Manage Itinerary ---")
         print("1. Add an Itinerary Entry")
-        print("2. View All Itineraries")
+        print("2. View All Itinerary Entries")
         print("3. Edit an Itinerary Entry")
         print("4. Delete an Itinerary Entry")
         print("5. Back to Main Menu")
 
-        choice = input("Choose an option: ").strip()
+        choice = input("Choose an option: ")
 
         if choice == '1':
             add_itinerary_entry()
@@ -273,7 +286,7 @@ def manage_itinerary_menu():
         elif choice == '5':
             break
         else:
-            print_warning("Invalid option. Please choose again.")
+            print_error("Invalid option. Please choose again.")
 
 def add_itinerary_entry():
     """Adds a new itinerary entry to the itinerary.json file with input validation."""
@@ -298,15 +311,19 @@ def add_itinerary_entry():
     # Fetch trip start and end dates for date validation
     trip_start_date = datetime.strptime(trips[trip_id]['start_date'], "%Y-%m-%d")
     trip_end_date = datetime.strptime(trips[trip_id]['end_date'], "%Y-%m-%d")
+    current_date = datetime.now().date()
 
     # Validate date
     while True:
         date = input("Enter date (YYYY-MM-DD): ").strip()
         if validate_date_format(date):
-            itinerary_date = datetime.strptime(date, "%Y-%m-%d")
-            if trip_start_date <= itinerary_date <= trip_end_date:
+            itinerary_date = datetime.strptime(date, "%Y-%m-%d").date()
+            if itinerary_date < current_date:
+                print_error("Date cannot be in the past. Please enter a future or current date.")
+            elif trip_start_date.date() <= itinerary_date <= trip_end_date.date():
                 break
-            print_error(f"Date must be within the trip duration ({trip_start_date.date()} to {trip_end_date.date()}).")
+            else:
+                print_error(f"Date must be within the trip duration ({trip_start_date.date()} to {trip_end_date.date()}).")
         else:
             print_error("Invalid date format. Please enter the date as YYYY-MM-DD.")
 
@@ -327,13 +344,29 @@ def add_itinerary_entry():
     save_data(file_path, itinerary)
     print_success("New itinerary entry added successfully!")
 
+def view_itineraries():
+    """Displays all the itineraries saved in the itinerary.json file."""
+    file_path = "itinerary.json"
+    itinerary = load_data(file_path)
+
+    if not itinerary:
+        print_warning("No itinerary entries found.")
+    else:
+        print("\n--- All Itinerary Entries ---")
+        for itinerary_id, details in itinerary.items():
+            print(f"Itinerary ID: {itinerary_id}")
+            print(f"Trip ID: {details['trip_id']}")
+            print(f"Date: {details['date']}")
+            print(f"Activity: {details['activity']}")
+            print("")
+
 def edit_itinerary_entry():
     """Edits an existing itinerary entry in the itinerary.json file."""
     file_path = "itinerary.json"
     itinerary = load_data(file_path)
 
     if not itinerary:
-        print_warning("No itineraries found.")
+        print_warning("No itinerary entries found.")
         return
 
     itinerary_id = input("Enter the Itinerary ID to edit: ").strip()
@@ -346,12 +379,16 @@ def edit_itinerary_entry():
         trips = load_data("trips.json")
         trip_start_date = datetime.strptime(trips[trip_id]['start_date'], "%Y-%m-%d")
         trip_end_date = datetime.strptime(trips[trip_id]['end_date'], "%Y-%m-%d")
+        current_date = datetime.now().date()
 
         date = input(f"Enter new date (YYYY-MM-DD) (current: {entry['date']}): ").strip()
         if date:
             if validate_date_format(date):
-                itinerary_date = datetime.strptime(date, "%Y-%m-%d")
-                if trip_start_date <= itinerary_date <= trip_end_date:
+                itinerary_date = datetime.strptime(date, "%Y-%m-%d").date()
+                if itinerary_date < current_date:
+                    print_error("Date cannot be in the past. Please enter a future or current date.")
+                    return
+                elif trip_start_date.date() <= itinerary_date <= trip_end_date.date():
                     entry['date'] = date
                 else:
                     print_error(f"Date must be within the trip duration ({trip_start_date.date()} to {trip_end_date.date()}).")
@@ -368,6 +405,24 @@ def edit_itinerary_entry():
     else:
         print_error("Itinerary ID not found.")
 
+def delete_itinerary_entry():
+    """Deletes an itinerary entry from the itinerary.json file."""
+    file_path = "itinerary.json"
+    itinerary = load_data(file_path)
+
+    if not itinerary:
+        print_warning("No itinerary entries found.")
+        return
+
+    itinerary_id = input("Enter the Itinerary ID to delete: ").strip()
+    if itinerary_id in itinerary:
+        del itinerary[itinerary_id]
+        save_data(file_path, itinerary)
+        print_success("Itinerary entry deleted successfully!")
+    else:
+        print_error("Itinerary ID not found.")
+
+# Date format validation helper function
 def validate_date_format(date_str):
     """Validates if the given date string matches the YYYY-MM-DD format."""
     try:
@@ -375,40 +430,6 @@ def validate_date_format(date_str):
         return True
     except ValueError:
         return False
-
-def view_itineraries():
-    """Displays all the itineraries saved in the itinerary.json file."""
-    file_path = "itinerary.json"
-    itinerary = load_data(file_path)
-
-    if not itinerary:
-        print_warning("No itineraries found.")
-    else:
-        print_success("\n--- All Itineraries ---")
-        for itinerary_id, details in itinerary.items():
-            print(f"Itinerary ID: {itinerary_id}")
-            print(f"Trip ID: {details['trip_id']}")
-            print(f"Date: {details['date']}")
-            print(f"Activity: {details['activity']}")
-            print("")
-
-def delete_itinerary_entry():
-    """Deletes an itinerary entry from the itinerary.json file."""
-    file_path = "itinerary.json"
-    itinerary = load_data(file_path)
-
-    if not itinerary:
-        print_warning("No itineraries found.")
-        return
-
-    itinerary_id = input("Enter the Itinerary ID to delete: ").strip()
-
-    if itinerary_id in itinerary:
-        del itinerary[itinerary_id]
-        save_data(file_path, itinerary)
-        print_success("Itinerary entry deleted successfully!")
-    else:
-        print_error("Itinerary ID not found.")
 
 # --- Expenses Management Functions ---
 

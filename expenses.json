@@ -16,5 +16,17 @@
         "amount": 100.0,
         "category": "food",
         "description": "food"
+    },
+    "3": {
+        "trip_id": "1",
+        "amount": 200.0,
+        "category": "transport",
+        "description": "taxi"
+    },
+    "5": {
+        "trip_id": "1",
+        "amount": 200.0,
+        "category": "sightseeing",
+        "description": "tour bus"
     }
 }
