@@ -59,6 +59,7 @@ def main_menu():
             manage_expenses_menu()
         elif choice == '4':
             print_success("Navigating to Summary...")
+            show_summary()
         elif choice == '5':
             print_success("Exiting...")
             break
@@ -220,7 +221,7 @@ def edit_trip():
         print_success("Trip updated successfully!")
     else:
         print_error("Trip ID not found.")
-        
+
 def delete_trip():
     """Deletes a trip from trips.json."""
     file_path = "trips.json"
@@ -586,71 +587,93 @@ def delete_expense():
 import pandas as pd
 
 def show_summary():
-    # Load the JSON data into DataFrames
-    trips_df = pd.read_json('trips.json').T
-    itinerary_df = pd.read_json('itinerary.json').T
-    expenses_df = pd.read_json('expenses.json').T
+    """Displays a detailed summary of trips, including itinerary and expenses."""
+    try:
+        # Load the JSON data into DataFrames
+        trips_df = pd.read_json('trips.json').T
+        itinerary_df = pd.read_json('itinerary.json').T
+        expenses_df = pd.read_json('expenses.json').T
 
-    # Convert trip_id to string in all DataFrames to match the type
-    trips_df.index = trips_df.index.astype(str)
-    itinerary_df['trip_id'] = itinerary_df['trip_id'].astype(str)
-    expenses_df['trip_id'] = expenses_df['trip_id'].astype(str)
+        # Check if the dataframes are empty 
+        if trips_df.empty:
+            print_warning("No trips found.")
+            return
+        if itinerary_df.empty:
+            print_warning("No itinerary data found.")
+        if expenses_df.empty:
+            print_warning("No expenses data found.")
 
-    # Merge the DataFrames
-    merged_df = pd.merge(trips_df, itinerary_df, left_index=True, right_on='trip_id', how='left')
-    final_df = pd.merge(merged_df, expenses_df, on='trip_id', how='left')
+        # Convert trip_id to string in all DataFrames to match the type
+        trips_df.index = trips_df.index.astype(str)
+        itinerary_df['trip_id'] = itinerary_df['trip_id'].astype(str)
+        expenses_df['trip_id'] = expenses_df['trip_id'].astype(str)
 
-    # Rename columns for clarity
-    final_df.rename(columns={
-        'trip_id': 'Trip ID',
-        'destination': 'Destination',
-        'start_date': 'Start Date',
-        'end_date': 'End Date',
-        'date': 'Activity Date',
-        'activity': 'Activity',
-        'amount': 'Expense Amount',
-        'category': 'Expense Category',
-        'description': 'Expense Description'
-    }, inplace=True)
+        # Merge the DataFrames        
+        merged_df = pd.merge(trips_df, itinerary_df, left_index=True, right_on='trip_id', how='left')
+        final_df = pd.merge(merged_df, expenses_df, on='trip_id', how='left')
 
-    # Convert 'Expense Amount' to numeric to enable calculations
-    final_df['Expense Amount'] = pd.to_numeric(final_df['Expense Amount'], errors='coerce')
+        # Rename columns for clarity
+        final_df.rename(columns={
+            'trip_id': 'Trip ID',
+            'destination': 'Destination',
+            'start_date': 'Start Date',
+            'end_date': 'End Date',
+            'date': 'Activity Date',
+            'activity': 'Activity',
+            'amount': 'Expense Amount',
+            'category': 'Expense Category',
+            'description': 'Expense Description'
+        }, inplace=True)
 
-    # Display the summary in a vertical format
-    print("\n--- Trip Summary ---")
-    for trip_id, trip_data in trips_df.iterrows():
-        print("\n------------------------------")
-        print(f"Trip ID: {trip_id}")
-        print(f"Destination: {trip_data['destination']}")
-        print(f"Start Date: {trip_data['start_date']}")
-        print(f"End Date: {trip_data['end_date']}")
-        print(f"Budget: {trip_data['budget']}")
+        # Convert 'Expense Amount' to numeric to enable calculations
+        final_df['Expense Amount'] = pd.to_numeric(final_df['Expense Amount'], errors='coerce')
 
-        # Filter expenses for the current trip
-        trip_expenses = final_df[final_df['Trip ID'] == trip_id]
+        # Display the summary in a vertical format
+        print("\n--- Trip Summary ---")
+        for trip_id, trip_data in trips_df.iterrows():
+            print("\n------------------------------")
+            print(f"Trip ID: {trip_id}")
+            print(f"Destination: {trip_data['destination']}")
+            print(f"Start Date: {trip_data['start_date']}")
+            print(f"End Date: {trip_data['end_date']}")
+            print(f"Budget: {trip_data.get('budget', 'N/A')}")
 
-        # Calculate total expenses for the trip
-        total_expenses = trip_expenses['Expense Amount'].sum()
-        print(f"Total Expenses: {total_expenses}")
+            # Filter expenses and activities for the current trip
+            trip_expenses = final_df[final_df['Trip ID'] == trip_id]
 
-        # Compare total expenses with the budget
-        if pd.notna(trip_data['budget']):
-            remaining_budget = trip_data['budget'] - total_expenses
-            print(f"Remaining Budget: {remaining_budget}")
-        else:
-            print("Budget: N/A")
+            # Calculate total expenses for the trip
+            total_expenses = trip_expenses['Expense Amount'].sum()
+            print(f"Total Expenses: {total_expenses}")
 
-        # Display each expense and activity
-        for _, row in trip_expenses.iterrows():
-            print("\nActivity Date: ", row['Activity Date'] if pd.notna(row['Activity Date']) else 'N/A')
-            print("Activity: ", row['Activity'] if pd.notna(row['Activity']) else 'N/A')
-            print("Expense Amount: ", row['Expense Amount'] if pd.notna(row['Expense Amount']) else 'N/A')
-            print("Expense Category: ", row['Expense Category'] if pd.notna(row['Expense Category']) else 'N/A')
-            print("Expense Description: ", row['Expense Description'] if pd.notna(row['Expense Description']) else 'N/A')
+            # Compare total expenses with the budget
+            budget = trip_data.get('budget')
+            if pd.notna(budget):
+                try:
+                    remaining_budget = float(budget) - total_expenses
+                    print(f"Remaining Budget: {remaining_budget}")
+                except ValueError:
+                    print("Invalid budget format.")
+            else:
+                print("Budget: N/A")
 
-        print("------------------------------")
+            # Display each expense and activity
+            if trip_expenses.empty:
+                print("No itinerary or expenses for this trip.")
+            else:
+                for _, row in trip_expenses.iterrows():
+                    print("\nActivity Date: ", row['Activity Date'] if pd.notna(row['Activity Date']) else 'N/A')
+                    print("Activity: ", row['Activity'] if pd.notna(row['Activity']) else 'N/A')
+                    print("Expense Amount: ", row['Expense Amount'] if pd.notna(row['Expense Amount']) else 'N/A')
+                    print("Expense Category: ", row['Expense Category'] if pd.notna(row['Expense Category']) else 'N/A')
+                    print("Expense Description: ", row['Expense Description'] if pd.notna(row['Expense Description']) else 'N/A')
 
-    print("\n")
+            print("------------------------------")
+
+        print("\n")
+        print_success("Summary displayed successfully!")
+
+    except Exception as e:
+        print_error(f"An error occurred while displaying the summary: {e}")
 
 if __name__ == "__main__":
     
