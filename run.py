@@ -118,7 +118,13 @@ def create_trip():
         else:
             break  # Valid trip ID
 
-    destination = input("Enter the destination: ")
+    # Prompt for a valid destination
+    while True:
+        destination = input("Enter the destination: ").strip()
+        if destination:
+            break
+        else:
+            print_error("Destination cannot be empty.")
 
     # Prompt for a valid start date
     while True:
@@ -191,11 +197,17 @@ def edit_trip():
     trip_id = input("Enter the Trip ID to edit: ")
 
     if trip_id in trips:
-        print("Editing trip details. Leave blank to keep the current value.")
-        destination = input(
-            f"Enter destination (current: {trips[trip_id]['destination']}): "
-        ) or trips[trip_id]['destination']
+        print("Editing trip details.")
 
+        # Validate destination input
+        while True:
+            destination = input(
+                f"Destination (current: {trips[trip_id]['destination']}): "
+            ).strip()
+            if destination:
+                break
+            else:
+                print_error("Destination cannot be blank.")
         # Validate and update the start date
         while True:
             start_date = input(
