@@ -85,7 +85,7 @@ def manage_trips_menu():
         console.print("2. View All Trips", style="cyan")
         console.print("3. Edit a Trip", style="cyan")
         console.print("4. Delete a Trip", style="cyan")
-        console.print("5. Back to Main Menu", style="cyan")   
+        console.print("5. Back to Main Menu", style="cyan")
         choice = input("Choose an option: ")
 
         if choice == '1':
@@ -114,7 +114,7 @@ def create_trip():
         if not trip_id.isdigit() or int(trip_id) <= 0:
             print_error("Invalid Trip ID. Must be a positive number.")
         elif trip_id in trips:
-            print_error("Trip ID already exists. Please choose a different ID.")
+            print_error("ID already exists. Please choose a different ID.")
         else:
             break  # Valid trip ID
 
@@ -133,7 +133,10 @@ def create_trip():
         end_date = input("Enter the end date (YYYY-MM-DD): ")
         if validate_date(end_date):
             # Check if the end date is after or the same as the start date
-            if datetime.strptime(end_date, "%Y-%m-%d") >= datetime.strptime(start_date, "%Y-%m-%d"):
+            if (
+                datetime.strptime(end_date, "%Y-%m-%d")
+                >= datetime.strptime(start_date, "%Y-%m-%d")
+            ):
                 break
             else:
                 print_error("End date cannot be earlier than the start date.")
@@ -189,30 +192,45 @@ def edit_trip():
 
     if trip_id in trips:
         print("Editing trip details. Leave blank to keep the current value.")
-        destination = input(f"Enter new destination (current: {trips[trip_id]['destination']}): ") or trips[trip_id]['destination']
+        destination = input(
+            f"Enter destination (current: {trips[trip_id]['destination']}): "
+        ) or trips[trip_id]['destination']
 
         # Validate and update the start date
         while True:
-            start_date = input(f"Enter new start date (current: {trips[trip_id]['start_date']}): ") or trips[trip_id]['start_date']
+            start_date = input(
+                f"Enter start date (current: {trips[trip_id]['start_date']}): "
+            ) or trips[trip_id]['start_date']
             if validate_date(start_date):
                 break
             else:
-                print_error("Invalid start date. Must be today or a future date.")
+                print_error("Invalid start date. Must be a future date.")
 
         # Validate and update the end date
         while True:
-            end_date = input(f"Enter new end date (current: {trips[trip_id]['end_date']}): ") or trips[trip_id]['end_date']
-            if validate_date(end_date) and datetime.strptime(end_date, "%Y-%m-%d") >= datetime.strptime(start_date, "%Y-%m-%d"):
+            end_date = input(
+                f"Enter new end date (current: {trips[trip_id]['end_date']}): "
+            ) or trips[trip_id]['end_date']
+            if (
+                validate_date(end_date) and
+                datetime.strptime(end_date, "%Y-%m-%d")
+                >= datetime.strptime(start_date, "%Y-%m-%d")
+            ):
                 break
             else:
-                print_error("Invalid end date. Must be today or a future date, and not before the start date.")
+                print_error(
+                    "Invalid end date. Must be today or a future date, "
+                    "and not before the start date."
+                )
 
-        # Retrieve the current budget or set it to a default value if not available
+        # Retrieve the budget or set it to a default value if not available
         current_budget = trips[trip_id].get('budget', '0.0')
 
         # Validate and update the budget
         while True:
-            budget = input(f"Enter new budget (current: {current_budget}): ") or current_budget
+            budget = input(
+                f"Enter new budget (current: {current_budget}): "
+            ) or current_budget
             if validate_budget(budget):
                 break
             else:
@@ -302,16 +320,19 @@ def manage_itinerary_menu():
 
 
 def add_itinerary_entry():
-    """Adds a new itinerary entry to the itinerary.json file with input validation."""
+    """Adds a new itinerary entry to itinerary.json with input validation."""
     file_path = "itinerary.json"
     itinerary = load_data(file_path)
 
     # Validate itinerary ID
     while True:
         itinerary_id = input("Enter itinerary ID: ").strip()
-        if itinerary_id.isdigit() and int(itinerary_id) > 0 and itinerary_id not in itinerary:
+        if (
+            itinerary_id.isdigit() and int(itinerary_id) > 0
+            and itinerary_id not in itinerary
+        ):
             break
-        print_error("Invalid itinerary ID or ID already exists. Please try again.")
+        print_error("Invalid ID or ID already exists. Please try again.")
 
     # Validate trip ID
     trips = load_data("trips.json")
@@ -322,8 +343,12 @@ def add_itinerary_entry():
         print_error("Trip ID not found. Please enter an existing Trip ID.")
 
     # Fetch trip start and end dates for date validation
-    trip_start_date = datetime.strptime(trips[trip_id]['start_date'], "%Y-%m-%d")
-    trip_end_date = datetime.strptime(trips[trip_id]['end_date'], "%Y-%m-%d")
+    trip_start_date = datetime.strptime(
+        trips[trip_id]['start_date'], "%Y-%m-%d"
+    )
+    trip_end_date = datetime.strptime(
+        trips[trip_id]['end_date'], "%Y-%m-%d"
+    )
     current_date = datetime.now().date()
 
     # Validate date
@@ -332,13 +357,21 @@ def add_itinerary_entry():
         if validate_date_format(date):
             itinerary_date = datetime.strptime(date, "%Y-%m-%d").date()
             if itinerary_date < current_date:
-                print_error("Date cannot be in the past. Please enter a future or current date.")
-            elif trip_start_date.date() <= itinerary_date <= trip_end_date.date():
+                print_error(
+                    "Date cannot be in the past. Please enter a future date."
+                )
+            elif (
+                trip_start_date.date()
+                <= itinerary_date <= trip_end_date.date()
+            ):
                 break
             else:
-                print_error(f"Date must be within the trip duration ({trip_start_date.date()} to {trip_end_date.date()}).")
+                print_error(
+                    f"Date must be within the trip duration "
+                    f"({trip_start_date.date()} to {trip_end_date.date()})."
+                )
         else:
-            print_error("Invalid date format. Please enter the date as YYYY-MM-DD.")
+            print_error("Invalid format. Please enter the date as YYYY-MM-DD.")
 
     # Validate activity
     activity = input("Enter activity: ").strip()
@@ -376,7 +409,7 @@ def view_itineraries():
 
 
 def edit_itinerary_entry():
-    """Edits an existing itinerary entry in the itinerary.json file."""
+    """Edits an existing itinerary entry in itinerary.json."""
     file_path = "itinerary.json"
     itinerary = load_data(file_path)
 
@@ -386,35 +419,58 @@ def edit_itinerary_entry():
 
     itinerary_id = input("Enter the Itinerary ID to edit: ").strip()
     if itinerary_id in itinerary:
-        print_success("Editing itinerary details. Leave blank to keep the current value.")
+        print_success(
+            "Editing itinerary details. Leave blank to keep the current value."
+        )
         entry = itinerary[itinerary_id]
         trip_id = entry['trip_id']
 
         # Fetch trip start and end dates for date validation
         trips = load_data("trips.json")
-        trip_start_date = datetime.strptime(trips[trip_id]['start_date'], "%Y-%m-%d")
-        trip_end_date = datetime.strptime(trips[trip_id]['end_date'], "%Y-%m-%d")
+        trip_start_date = datetime.strptime(
+            trips[trip_id]['start_date'], "%Y-%m-%d"
+        )
+        trip_end_date = datetime.strptime(
+            trips[trip_id]['end_date'], "%Y-%m-%d"
+        )
         current_date = datetime.now().date()
 
-        date = input(f"Enter new date (YYYY-MM-DD) (current: {entry['date']}): ").strip()
+        date = input(
+            f"Enter new date (YYYY-MM-DD) (current: {entry['date']}): "
+        ).strip()
         if date:
             if validate_date_format(date):
                 itinerary_date = datetime.strptime(date, "%Y-%m-%d").date()
                 if itinerary_date < current_date:
-                    print_error("Date cannot be in the past. Please enter a future or current date.")
+                    print_error(
+                        "Date cannot be in the past. Please enter a future or "
+                        "current date."
+                    )
                     return
-                elif trip_start_date.date() <= itinerary_date <= trip_end_date.date():
+                elif (
+                    trip_start_date.date()
+                    <= itinerary_date <= trip_end_date.date()
+                ):
                     entry['date'] = date
                 else:
-                    print_error(f"Date must be within the trip duration ({trip_start_date.date()} to {trip_end_date.date()}).")
+                    print_error(
+                        "Date must be within the trip duration ("
+                        f"{trip_start_date.date()} to {trip_end_date.date()})."
+                    )
                     return
             else:
-                print_error("Invalid date format. Please enter the date as YYYY-MM-DD.")
+                print_error("Invalid format. Enter date as YYYY-MM-DD.")
                 return
 
-        activity = input(f"Enter new activity (current: {entry['activity']}): ").strip() or entry['activity']
+        activity = input(
+            f"Enter new activity (current: {entry['activity']}): "
+        ).strip() or entry['activity']
 
-        entry.update({"trip_id": trip_id, "date": entry['date'], "activity": activity})
+        entry.update({
+            "trip_id": trip_id,
+            "date": entry['date'],
+            "activity": activity
+        })
         save_data(file_path, itinerary)
         print_success("Itinerary entry updated successfully!")
     else:
@@ -486,19 +542,28 @@ def add_expense():
     # Validate expense ID
     while True:
         try:
-            expense_id = int(input("Enter expense ID (must be greater than 0): ").strip())
+            expense_id = int(
+                input("Enter expense ID (must be greater than 0): ").strip()
+            )
             if expense_id > 0 and str(expense_id) not in expenses:
                 break
-            console.print("[red]Invalid expense ID or ID already exists. Please try again.[/red]")
+            console.print(
+                "[red]Invalid ID or ID already exists. Please try again.[/red]"
+            )
         except ValueError:
-            console.print("[red]Invalid input. Please enter a numeric ID greater than 0.[/red]")
+            console.print(
+                "[red]Invalid input. Please enter a positivenumeric ID.[/red]"
+            )
 
     # Validate trip ID
     while True:
         trip_id = input("Enter the Trip ID: ").strip()
         if trip_id in trips:
             break
-        console.print("[red]Trip ID not found. Please enter a valid Trip ID that already exists.[/red]")
+        console.print(
+            "[red]Trip ID not found. Please enter a valid Trip ID that already"
+            "exists.[/red]"
+        )
 
     # Validate amount
     while True:
@@ -508,13 +573,15 @@ def add_expense():
                 break
             console.print("[red]Amount must be a non-negative number.[/red]")
         except ValueError:
-            console.print("[red]Invalid input. Please enter a valid number for the amount.[/red]")
+            console.print(
+                "[red]Invalid input. Please enter a valid number.[/red]"
+            )
 
     # Validate category
     category = input("Enter the category (e.g., food, transport): ").strip()
     while not category:
         console.print("[red]Category cannot be empty.[/red]")
-        category = input("Enter the category (e.g., food, transport): ").strip()
+        category = input("Enter the category (e.g., transport): ").strip()
 
     # Validate description
     description = input("Enter a description: ").strip()
@@ -559,9 +626,17 @@ def edit_expense():
     expense_id = input("Enter the Expense ID to edit: ").strip()
 
     if expense_id in expenses:
-        console.print("Editing expense details. Leave blank to keep the current value.", style="bold yellow")
-        trip_id = input(f"Enter new Trip ID (current: {expenses[expense_id]['trip_id']}): ").strip() or expenses[expense_id]['trip_id']
-        amount = input(f"Enter new amount (current: {expenses[expense_id]['amount']}): ").strip()
+        console.print(
+            "Editing expense details. Leave blank to keep the current value.",
+            style="bold yellow"
+        )
+        trip_id = input(
+            f"Enter new Trip ID (current: {expenses[expense_id]['trip_id']}): "
+        ).strip() or expenses[expense_id]['trip_id']
+
+        amount = input(
+            f"Enter new amount (current: {expenses[expense_id]['amount']}): "
+        ).strip()
         if amount:
             try:
                 amount = float(amount)
@@ -571,8 +646,13 @@ def edit_expense():
         else:
             amount = expenses[expense_id]['amount']
 
-        category = input(f"Enter new category (current: {expenses[expense_id]['category']}): ").strip() or expenses[expense_id]['category']
-        description = input(f"Enter new description (current: {expenses[expense_id]['description']}): ").strip() or expenses[expense_id]['description']
+        category = input(
+            f"Enter category (current: {expenses[expense_id]['category']}): "
+        ).strip() or expenses[expense_id]['category']
+
+        description = input(
+            f"Enter descrip (current: {expenses[expense_id]['description']}): "
+        ).strip() or expenses[expense_id]['description']
 
         expenses[expense_id] = {
             "trip_id": trip_id,
@@ -604,7 +684,7 @@ def delete_expense():
 
 # Summary
 def show_summary():
-    """Displays a detailed summary of trips, including itinerary and expenses."""
+    """Displays a detailed summary of all trips."""
     try:
         # Load the JSON data into DataFrames
         trips_df = pd.read_json('trips.json').T
@@ -625,8 +705,11 @@ def show_summary():
         itinerary_df['trip_id'] = itinerary_df['trip_id'].astype(str)
         expenses_df['trip_id'] = expenses_df['trip_id'].astype(str)
 
-        # Merge the DataFrames    
-        merged_df = pd.merge(trips_df, itinerary_df, left_index=True, right_on='trip_id', how='left')
+        # Merge the DataFrames
+        merged_df = pd.merge(
+            trips_df, itinerary_df, left_index=True, right_on='trip_id',
+            how='left'
+        )
         final_df = pd.merge(merged_df, expenses_df, on='trip_id', how='left')
 
         # Rename columns for clarity
@@ -643,7 +726,9 @@ def show_summary():
         }, inplace=True)
 
         # Convert 'Expense Amount' to numeric to enable calculations
-        final_df['Expense Amount'] = pd.to_numeric(final_df['Expense Amount'], errors='coerce')
+        final_df['Expense Amount'] = pd.to_numeric(
+            final_df['Expense Amount'], errors='coerce'
+        )
 
         # Display the summary in a vertical format
         print("\n--- Trip Summary ---")
@@ -678,11 +763,17 @@ def show_summary():
                 print_warning("No itinerary or expenses for this trip.")
             else:
                 for _, row in trip_expenses.iterrows():
-                    print("\nActivity Date: ", row['Activity Date'] if pd.notna(row['Activity Date']) else 'N/A')
-                    print("Activity: ", row['Activity'] if pd.notna(row['Activity']) else 'N/A')
-                    print("Expense Amount: ", row['Expense Amount'] if pd.notna(row['Expense Amount']) else 'N/A')
-                    print("Expense Category: ", row['Expense Category'] if pd.notna(row['Expense Category']) else 'N/A')
-                    print("Expense Description: ", row['Expense Description'] if pd.notna(row['Expense Description']) else 'N/A')
+                    print("\nActivity Date: ", row['Activity Date'] if
+                          pd.notna(row['Activity Date']) else 'N/A')
+                    print("Activity: ", row['Activity'] if
+                          pd.notna(row['Activity']) else 'N/A')
+                    print("Expense Amount: ", row['Expense Amount'] if
+                          pd.notna(row['Expense Amount']) else 'N/A')
+                    print("Expense Category: ", row['Expense Category'] if
+                          pd.notna(row['Expense Category']) else 'N/A')
+                    print("Expense Description: ",
+                          row['Expense Description'] if
+                          pd.notna(row['Expense Description']) else 'N/A')
 
             print("------------------------------")
 
@@ -694,5 +785,4 @@ def show_summary():
 
 
 if __name__ == "__main__":
-    
     main_menu()
