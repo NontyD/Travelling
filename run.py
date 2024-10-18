@@ -1,6 +1,7 @@
 import json
 import os
 import re
+import pandas as pd
 from datetime import datetime
 import pyfiglet
 from rich.console import Console
@@ -67,20 +68,17 @@ def main_menu():
             print_error("Invalid option. Please choose again.")
 
 
-from datetime import datetime
-
 # --- Trip Management Functions ---
-
 def manage_trips_menu():
     """Displays the menu for managing trips."""
     while True:
-        print("\n--- Manage Trips ---")
-        print("1. Add a New Trip")
-        print("2. View All Trips")
-        print("3. Edit a Trip")
-        print("4. Delete a Trip")
-        print("5. Back to Main Menu")
-
+        console.print("\n--- Manage Trips ---", style="bold cyan")
+        console.print("1. Add a New Trip", style="cyan")
+        console.print("2. View All Trips", style="cyan")
+        console.print("3. Edit a Trip", style="cyan")
+        console.print("4. Delete a Trip", style="cyan")
+        console.print("5. Back to Main Menu", style="cyan")
+        
         choice = input("Choose an option: ")
 
         if choice == '1':
@@ -263,16 +261,15 @@ def validate_budget(budget_str):
         return False
 
 # --- Itinerary Management Functions ---
-
 def manage_itinerary_menu():
     """Displays the menu for managing itineraries."""
     while True:
-        print("\n--- Manage Itinerary ---")
-        print("1. Add an Itinerary Entry")
-        print("2. View All Itinerary Entries")
-        print("3. Edit an Itinerary Entry")
-        print("4. Delete an Itinerary Entry")
-        print("5. Back to Main Menu")
+        console.print("\n--- Manage Itinerary ---", style="bold cyan")
+        console.print("1. Add an Itinerary Entry", style="cyan")
+        console.print("2. View All Itinerary Entries", style="bold cyan")
+        console.print("3. Edit an Itinerary Entry", style="bold cyan")
+        console.print("4. Delete an Itinerary Entry", style="bold cyan")
+        console.print("5. Back to Main Menu", style="bold cyan")
 
         choice = input("Choose an option: ")
 
@@ -433,16 +430,15 @@ def validate_date_format(date_str):
         return False
 
 # --- Expenses Management Functions ---
-
 def manage_expenses_menu():
     """Displays the menu for managing expenses."""
     while True:
-        console.print("\n--- Manage Expenses ---", style="bold green")
-        console.print("1. Add an Expense", style="bold")
-        console.print("2. View All Expenses", style="bold")
-        console.print("3. Edit an Expense", style="bold")
-        console.print("4. Delete an Expense", style="bold")
-        console.print("5. Back to Main Menu", style="bold")
+        console.print("\n--- Manage Expenses ---", style="bold cyan")
+        console.print("1. Add an Expense", style="cyan")
+        console.print("2. View All Expenses", style="cyan")
+        console.print("3. Edit an Expense", style="cyan")
+        console.print("4. Delete an Expense", style="cyan")
+        console.print("5. Back to Main Menu", style="cyan")
 
         choice = input("Choose an option: ")
 
@@ -581,11 +577,7 @@ def delete_expense():
     else:
         print_error("Expense ID not found.")
 
-
-    """Displays a summary of a specific trip including itinerary and costs."""
-    
-import pandas as pd
-
+# Summary
 def show_summary():
     """Displays a detailed summary of trips, including itinerary and expenses."""
     try:
@@ -652,13 +644,13 @@ def show_summary():
                     remaining_budget = float(budget) - total_expenses
                     print(f"Remaining Budget: {remaining_budget}")
                 except ValueError:
-                    print("Invalid budget format.")
+                    print_error("Invalid budget format.")
             else:
                 print("Budget: N/A")
 
             # Display each expense and activity
             if trip_expenses.empty:
-                print("No itinerary or expenses for this trip.")
+                print_warning("No itinerary or expenses for this trip.")
             else:
                 for _, row in trip_expenses.iterrows():
                     print("\nActivity Date: ", row['Activity Date'] if pd.notna(row['Activity Date']) else 'N/A')
