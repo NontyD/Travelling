@@ -9,19 +9,24 @@ from rich.console import Console
 # Create a single console instance for the entire module
 console = Console()
 
+
 def print_success(message):
     console.print(message, style="bold green")
+
 
 def print_warning(message):
     console.print(message, style="bold yellow")
 
+
 def print_error(message):
     console.print(message, style="bold red")
+
 
 def display_heading():
     # Use the global console instance
     ascii_banner = pyfiglet.figlet_format("Travel Planner!", font="mini")
     console.print(f"\n✈ [bold blue]{ascii_banner}[/bold blue] ✈\n")
+
 
 def load_data(file_path):
     """Loads data from a JSON file."""
@@ -30,13 +35,16 @@ def load_data(file_path):
             return json.load(file)
     return {}
 
+
 def save_data(file_path, data):
     """Saves data to a JSON file."""
     with open(file_path, "w") as file:
         json.dump(data, file, indent=4)
 
+
 def manage_itinerary_menu():
     pass
+
 
 def main_menu():
     while True:
@@ -47,7 +55,7 @@ def main_menu():
         console.print("3. Track Expenses", style="cyan")
         console.print("4. Summary", style="cyan")
         console.print("5. Exit", style="cyan")
-        choice = input("Choose an option: ")    
+        choice = input("Choose an option: ")
 
         if choice == '1':
             print_success("Navigating to Manage Trips Menu...")
@@ -77,8 +85,7 @@ def manage_trips_menu():
         console.print("2. View All Trips", style="cyan")
         console.print("3. Edit a Trip", style="cyan")
         console.print("4. Delete a Trip", style="cyan")
-        console.print("5. Back to Main Menu", style="cyan")
-        
+        console.print("5. Back to Main Menu", style="cyan")   
         choice = input("Choose an option: ")
 
         if choice == '1':
@@ -93,6 +100,7 @@ def manage_trips_menu():
             break
         else:
             print_error("Invalid option. Please choose again.")
+
 
 def create_trip():
     """Creates a new trip entry and saves it to trips.json."""
@@ -151,6 +159,7 @@ def create_trip():
     save_data(file_path, trips)
     print_success("New trip added successfully!")
 
+
 def view_trips():
     """Displays all trips saved in trips.json."""
     file_path = "trips.json"
@@ -169,6 +178,7 @@ def view_trips():
             print(f"End Date: {details['end_date']}")
             print(f"Budget: {budget}")
             print("")
+
 
 def edit_trip():
     """Edits an existing trip in trips.json."""
@@ -220,6 +230,7 @@ def edit_trip():
     else:
         print_error("Trip ID not found.")
 
+
 def delete_trip():
     """Deletes a trip from trips.json."""
     file_path = "trips.json"
@@ -236,6 +247,7 @@ def delete_trip():
 
 # --- Helper Functions ---
 
+
 def validate_date(date_str):
     """Validates if the date is today or a future date."""
     try:
@@ -249,6 +261,7 @@ def validate_date(date_str):
     except ValueError:
         return False
 
+
 def validate_budget(budget_str):
     """Validates if the budget is a positive number."""
     try:
@@ -259,6 +272,7 @@ def validate_budget(budget_str):
             return False
     except ValueError:
         return False
+
 
 # --- Itinerary Management Functions ---
 def manage_itinerary_menu():
@@ -285,6 +299,7 @@ def manage_itinerary_menu():
             break
         else:
             print_error("Invalid option. Please choose again.")
+
 
 def add_itinerary_entry():
     """Adds a new itinerary entry to the itinerary.json file with input validation."""
@@ -342,6 +357,7 @@ def add_itinerary_entry():
     save_data(file_path, itinerary)
     print_success("New itinerary entry added successfully!")
 
+
 def view_itineraries():
     """Displays all the itineraries saved in the itinerary.json file."""
     file_path = "itinerary.json"
@@ -357,6 +373,7 @@ def view_itineraries():
             print(f"Date: {details['date']}")
             print(f"Activity: {details['activity']}")
             print("")
+
 
 def edit_itinerary_entry():
     """Edits an existing itinerary entry in the itinerary.json file."""
@@ -403,6 +420,7 @@ def edit_itinerary_entry():
     else:
         print_error("Itinerary ID not found.")
 
+
 def delete_itinerary_entry():
     """Deletes an itinerary entry from the itinerary.json file."""
     file_path = "itinerary.json"
@@ -420,6 +438,7 @@ def delete_itinerary_entry():
     else:
         print_error("Itinerary ID not found.")
 
+
 # Date format validation helper function
 def validate_date_format(date_str):
     """Validates if the given date string matches the YYYY-MM-DD format."""
@@ -428,6 +447,7 @@ def validate_date_format(date_str):
         return True
     except ValueError:
         return False
+
 
 # --- Expenses Management Functions ---
 def manage_expenses_menu():
@@ -454,6 +474,7 @@ def manage_expenses_menu():
             break
         else:
             console.print("[red]Invalid option. Please choose again.[/red]")
+
 
 def add_expense():
     """Adds a new expense to the expenses.json file."""
@@ -512,6 +533,7 @@ def add_expense():
     save_data(file_path, expenses)
     print_success("New expense added successfully!")
 
+
 def view_expenses():
     """Displays all the expenses saved in the expenses.json file."""
     file_path = "expenses.json"
@@ -527,6 +549,7 @@ def view_expenses():
             console.print(f"Amount: {details['amount']}")
             console.print(f"Category: {details['category']}")
             console.print(f"Description: {details['description']}\n")
+
 
 def edit_expense():
     """Edits an existing expense in the expenses.json file."""
@@ -563,6 +586,7 @@ def edit_expense():
     else:
         print_error("Expense ID not found.")
 
+
 def delete_expense():
     """Deletes an expense from the expenses.json file."""
     file_path = "expenses.json"
@@ -577,6 +601,7 @@ def delete_expense():
     else:
         print_error("Expense ID not found.")
 
+
 # Summary
 def show_summary():
     """Displays a detailed summary of trips, including itinerary and expenses."""
@@ -586,7 +611,7 @@ def show_summary():
         itinerary_df = pd.read_json('itinerary.json').T
         expenses_df = pd.read_json('expenses.json').T
 
-        # Check if the dataframes are empty 
+        # Check if the dataframes are empty
         if trips_df.empty:
             print_warning("No trips found.")
             return
@@ -600,7 +625,7 @@ def show_summary():
         itinerary_df['trip_id'] = itinerary_df['trip_id'].astype(str)
         expenses_df['trip_id'] = expenses_df['trip_id'].astype(str)
 
-        # Merge the DataFrames        
+        # Merge the DataFrames    
         merged_df = pd.merge(trips_df, itinerary_df, left_index=True, right_on='trip_id', how='left')
         final_df = pd.merge(merged_df, expenses_df, on='trip_id', how='left')
 
@@ -666,6 +691,7 @@ def show_summary():
 
     except Exception as e:
         print_error(f"An error occurred while displaying the summary: {e}")
+
 
 if __name__ == "__main__":
     
