@@ -1,32 +1,311 @@
-![CI logo](https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png)
+# Travel Planner
+![CCCCP header](/assets/images/landing.png)
 
-Welcome,
+As a person who loves traveling, managing trips, itineraries, and expenses can become overwhelming. This app was created to simplify that process, providing a streamlined way to plan, organize, and track all travel details. Whether it's managing multiple trips, keeping track of activities, or monitoring travel expenses, this application offers an all-in-one solution for travel enthusiasts and planners alike. By keeping everything in one place, users can focus more on enjoying their travels and less on the logistical details.
 
-This is the Code Institute student template for deploying your third portfolio project, the Python command-line project. The last update to this file was: **May 14, 2024**
+The deployed project live link is [HERE](https://travellingplanner-f3f27e55bd6d.herokuapp.com/) - ***Use Ctrl (Cmd) and click to open in a new window.*** 
 
-## Reminders
+## Contents
 
-- Your code must be placed in the `run.py` file
-- Your dependencies must be placed in the `requirements.txt` file
-- Do not edit any of the other files or your code may not deploy properly
+- [Introduction](#introduction)
+- [Project](#project)
+    - [User stories:](#user-stories)
+- [Pre development](#pre-development)
+    - [Flow chart](#flow-chart)
+- [Development](#development)
+- [Features](#features)
+  - 
+- [Technologies Used](#technologies-used)
+- [Resources](#resources)
+  - [Libraries](#libraries)
+- [Testing](#testing)
+- [Future Updates](#future-updates)  
+- [Validation](#validation)
+- [Deployment](#deployment)
+  - [Heroku](#heroku)
+  - [Branching the GitHub Repository using GitHub Desktop and Visual Studio Code](#branching-the-github-repository-using-github-desktop-and-visual-studio-code)
+- [Bugs](#bugs)
+- [Credits](#credits)
+- [Acknowledgements](#acknowledgements)
 
-## Creating the Heroku app
+## Introduction
 
-When you create the app, you will need to add two buildpacks from the _Settings_ tab. The ordering is as follows:
+This app is designed to help users manage their travel plans effortlessly. It allows users to create and organize trips, track itineraries, and log expenses all in one place. Users can add details like trip destinations, dates, budgets, activities, and categories for expenses, making it easy to plan and monitor every aspect of their journey. With intuitive features for adding, editing, and reviewing travel details, the app ensures that users can keep their trips organized and stay within budget, all while having quick access to important travel information.
 
-1. `heroku/python`
-2. `heroku/nodejs`
+## Project 
 
-You must then create a _Config Var_ called `PORT`. Set this to `8000`
+The aim of the project is to create a comprehensive and user-friendly travel management application that simplifies trip planning and organization. By integrating features for managing itineraries, tracking expenses, and storing key trip details, the project seeks to provide travelers with a centralized tool to efficiently plan, manage, and review their journeys. The ultimate goal is to enhance the travel experience by offering an organized, accessible, and easy-to-use platform for both casual travelers and travel enthusiasts alike.
 
-If you have credentials, such as in the Love Sandwiches project, you must create another _Config Var_ called `CREDS` and paste the JSON into the value field.
 
-Connect your GitHub repository and deploy as normal.
+### User stories:
 
-## Constraints
+1. As a User, **I want to create a new trip**
 
-The deployment terminal is set to 80 columns by 24 rows. That means that each line of text needs to be 80 characters or less otherwise it will be wrapped onto a second line.
+Description:
+As a user, I want to be able to create a new trip by providing the trip's destination, start date, end date, and budget, so I can keep track of my upcoming travel plans.
 
----
+Acceptance Criteria:
+A new trip ID is generated.
+The user is prompted to enter the destination, start date, end date, and budget.
+The trip is saved in the trips.json file.
 
-Happy coding!
+2. As a User, **I want to edit an existing trip**
+
+Description:
+As a user, I want to be able to edit the details of an existing trip, such as the destination, start and end dates, and budget, so I can update my travel plans if anything changes.
+
+Acceptance Criteria:
+The user can choose an existing trip by its ID.
+The user can edit one or more fields and leave others unchanged.
+The updates are saved in the trips.json file.
+
+3. As a User, **I want to view a summary of my trips**
+
+Description:
+As a user, I want to view a detailed summary of all my trips, including itinerary and expenses, so I can get an overview of my travel plans and spending.
+
+Acceptance Criteria:
+A summary of all trips is displayed.
+For each trip, details of the itinerary and total expenses are included.
+The summary shows if the trip is under or over budget.
+
+4. As a User, **I want to create a new itinerary entry for a trip**
+
+Description:
+As a user, I want to be able to add activities to the itinerary for a specific trip, so I can plan my schedule for each day of the trip.
+
+Acceptance Criteria:
+The user can select an existing trip by its ID.
+The user can add activities with a date.
+The itinerary entry is saved in the itinerary.json file.
+
+5. As a User, **I want to edit an itinerary entry**
+
+Description:
+As a user, I want to edit the details of an itinerary entry, such as the activity or the date, so I can adjust my schedule as needed.
+
+Acceptance Criteria:
+The user can select an itinerary entry by its ID.
+The user can edit the date or activity for the selected entry.
+The changes are saved in the itinerary.json file.
+
+6. As a User, **I want to add an expense to a trip**
+
+Description:
+As a user, I want to be able to record expenses for a trip, such as transportation, accommodation, or food, so I can track my spending during the trip.
+
+Acceptance Criteria:
+The user can select a trip by its ID.
+The user can add an expense with the amount, category, and description.
+The expense is saved in the expenses.json file.
+
+7. As a User, **I want to edit an expense for a trip**
+
+Description:
+As a user, I want to be able to edit the details of a recorded expense, such as the amount, category, or description, so I can correct any mistakes or update my records.
+
+Acceptance Criteria:
+The user can select an expense by its ID.
+The user can modify the amount, category, or description.
+The updates are saved in the expenses.json file.
+
+8. As a User, **I want input validation to prevent errors**
+
+Description:
+As a user, I want the system to validate my input (e.g., dates, budget, expense amount) to ensure that the data I enter is valid and accurate.
+
+Acceptance Criteria:
+Input for fields like dates and budget must be validated.
+The system provides error messages if the input is invalid (e.g., incorrect date format, negative budget).
+The user is prompted to correct invalid input before proceeding.
+
+### Site owner goals
+
+* **Enhance User Experience:**
+Create a user-friendly interface that simplifies the process of managing travel plans, making it easy for users to navigate the app and access its features.
+
+* **Promote Travel Planning:**
+Encourage users to plan and organize their trips efficiently, helping them to maximize their travel experiences and minimize stress.
+
+* **Encourage Financial Management:**
+Provide tools for users to track their travel budgets and expenses, fostering responsible financial habits and enabling them to stay within their financial limits.
+
+* **Support User Engagement:**
+Foster a community of travel enthusiasts by encouraging feedback, suggestions, and sharing experiences, which can help improve the app and build a loyal user base.
+
+* **Continuous Improvement:**
+Regularly update and enhance the app's features based on user feedback and evolving travel trends, ensuring that the application remains relevant and valuable to users.
+
+* **Secure Data Management:**
+Ensure that all user data, including trip details and expenses, is stored securely, maintaining user privacy and building trust in the application.
+
+* **Facilitate Travel Inspiration:**
+Incorporate features that inspire users to explore new destinations and activities, making the app not just a planning tool but also a source of travel ideas.
+
+* **Monitor App Performance:**
+Track usage statistics and user engagement metrics to identify areas for improvement and optimize the overall performance of the application.
+
+* **Expand User Base:**
+Develop marketing strategies to attract new users and grow the application's audience, making it a go-to platform for travel management.
+
+### Pre development
+
+#### Flow chart
+
+
+### Development
+
+
+
+## Features
+
+1. Trip Management:
+* Create Trips:
+Users can initiate new trips by specifying essential details, including:
+* * Destination: The location of the trip.
+* * Start Date and End Date: The timeframe for the trip, ensuring proper planning.
+* * Budget: An estimated amount allocated for the trip, helping users stay financially organized.
+* Edit Trips:
+Users can modify existing trip details to reflect any changes in plans, allowing for adjustments to:
+Update the destination, start and end dates, or budget.
+* Delete Trips:
+If plans change or a trip is no longer necessary, users can remove trips from their records.
+* Organize Trip Details:
+All trip information is stored and organized for easy access, enabling users to view their upcoming and past trips at a glance.
+
+2. Itinerary Planning:
+* Add Itinerary Entries:
+Users can create detailed itinerary entries for each trip, specifying:
+* * Activities: Various events or activities planned for specific days.
+* * Dates: The date for each activity, ensuring an organized daily schedule.
+* Edit Itinerary Entries:
+Users can modify existing itinerary entries, allowing them to:
+Update the activity name or date if plans change.
+* Delete Itinerary Entries:
+Users can remove entries if activities are canceled or rescheduled, ensuring their itineraries remain accurate.
+* Organized Planning:
+The itinerary feature helps users visualize their trip day by day, ensuring they make the most of their travel experience.
+
+3. Expense Tracking:
+* Record Expenses:
+Users can log all expenses incurred during a trip, capturing:
+* * Amount Spent: The total amount of each expense.
+* * Category: Classifying expenses into types such as food, transport, accommodation, etc.
+* * Description: Providing additional context or details about each expense.
+* Edit Expenses:
+Users can update expense entries to correct any inaccuracies or changes in spending.
+* Delete Expenses:
+Users can remove expense entries that are no longer relevant or were mistakenly logged.
+* Categorization:
+Organizing expenses into categories allows users to track their spending habits effectively and understand where their money is going.
+
+4. Summary Dashboard:
+* Detailed Summary:
+Users can view a comprehensive overview of all trips, including:
+* * Total Expenses: The sum of all expenses recorded for each trip.
+* * Budget Remaining: A calculation that shows how much budget is left after expenses.
+* * Itinerary Details: A quick glance at the planned activities for each trip.
+* Insights:
+The dashboard provides insights into spending habits, helping users manage their finances better and plan future trips accordingly.
+
+5. Input Validation:
+* Data Validation:
+User inputs are checked for correct formatting to prevent errors, ensuring:
+* * Dates are in the correct format (YYYY-MM-DD).
+* * Budgets and expenses are positive numbers.
+* Error Handling:
+Clear and informative error messages guide users when they enter invalid data, helping them correct mistakes easily.
+
+6. User-Friendly Interface:
+* Intuitive Navigation:
+The application features a simple and intuitive interface, allowing users to navigate through trip management functions effortlessly.
+* Responsive Design:
+The app is designed to be accessible on various devices, including smartphones, tablets, and desktops, providing a seamless experience regardless of screen size.
+
+7. Data Persistence:
+* JSON Data Storage:
+User data, including trips, itineraries, and expenses, is stored in JSON files, enabling easy retrieval and updates.
+* Session Accessibility:
+Users can access their data across multiple sessions, ensuring their information is saved and available whenever they return to the app.
+
+
+## Technologies Used
+
+The main technology used to create this program is Python
+
+
+### Resources
+
+- Gitpod 
+- GitHub 
+- Heroku
+- 
+
+### Libraries
+
+
+
+
+
+## Future Updates
+
+
+
+## Validation
+
+Code Institute Python Linter - https://pep8ci.herokuapp.com/# was used.
+All code validated and where lines were showing as too long they were adjusted. Some line adjustments caused bugs in the code but those bugs were fixed and some codes were rewritten.
+
+## Deployment
+
+### Heroku
+
+The Application has been deployed from GitHub to Heroku by following the steps:
+
+1. Create or log in to your account at heroku.com
+2. Create a new app, add a unique app name ( for this project, the name is travellingplanner) and then choose your region
+3. Click on create app
+4. Go to "Settings"
+5. Under Config Vars add the private API key information using key 'CRED' and into the value area copy the API key information added to the .json file.  Also add a key 'PORT' and value '8000'.
+6. Add required buildpacks (further dependencies). For this project, set it up so Python will be on top and Node.js on bottom
+7. Go to "Deploy" and select "GitHub" in "Deployment method"
+8. To connect Heroku app to your Github repository code enter your repository name, click 'Search' and then 'Connect' when it shows below.
+9.  Choose the branch you want to build your app from
+10. If preferred, click on "Enable Automatic Deploys", which keeps the app up to date with your GitHub repository
+11. Wait for the app to build. Once ready you will see the “App was successfully deployed” message and a 'View' button to take you to your deployed link.
+
+### Local Development
+
+#### How to Fork
+
+To fork the repository:
+
+1. Log in (or sign up) to Github.
+2. Find the repository you want to fork by either searching for it using the search bar or by directly navigating to its URL.
+3. Once you're on the repository's main page, locate the "Fork" button in the upper-right corner of the page, usually next to the "Star" button.
+4. Click on the "Fork" button.
+
+#### How to Clone
+
+To clone the repository:
+
+* Click on the "Code" button in your forked repository.
+* Copy the repository URL (HTTPS, SSH, or GitHub CLI).
+* Open a terminal (or command prompt) on your computer.
+* Run the following command: git clone <github.com/nontyd/soduku>
+
+## Testing
+
+Please refer to [TESTING.md](TESTING.md) file for all testing carried out.
+   
+The deployed project live link is [HERE](https://travellingplanner-f3f27e55bd6d.herokuapp.com/) - ***Use Ctrl (Cmd) and click to open in a new window.*** 
+
+## Bugs
+
+
+## Credits
+
+
+
+## Acknowledgements
+
