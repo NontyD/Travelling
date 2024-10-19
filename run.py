@@ -50,11 +50,11 @@ def main_menu():
     while True:
         display_heading()
         console.print("--- Main Menu ---", style="bold cyan")
-        console.print("1. Manage Trips", style="cyan")
-        console.print("2. Manage Itinerary", style="cyan")
-        console.print("3. Track Expenses", style="cyan")
-        console.print("4. Summary", style="cyan")
-        console.print("5. Exit", style="cyan")
+        console.print("1. Manage Trips", style="bold cyan")
+        console.print("2. Manage Itinerary", style="bold cyan")
+        console.print("3. Track Expenses", style="bold cyan")
+        console.print("4. Summary", style="bold cyan")
+        console.print("5. Exit", style="bold cyan")
         choice = input("Choose an option: ")
 
         if choice == '1':
@@ -81,11 +81,11 @@ def manage_trips_menu():
     """Displays the menu for managing trips."""
     while True:
         console.print("\n--- Manage Trips ---", style="bold cyan")
-        console.print("1. Add a New Trip", style="cyan")
-        console.print("2. View All Trips", style="cyan")
-        console.print("3. Edit a Trip", style="cyan")
-        console.print("4. Delete a Trip", style="cyan")
-        console.print("5. Back to Main Menu", style="cyan")
+        console.print("1. Add a New Trip", style="bold cyan")
+        console.print("2. View All Trips", style="bold cyan")
+        console.print("3. Edit a Trip", style="bold cyan")
+        console.print("4. Delete a Trip", style="bold cyan")
+        console.print("5. Back to Main Menu", style="bold cyan")
         choice = input("Choose an option: ")
 
         if choice == '1':
@@ -309,7 +309,7 @@ def manage_itinerary_menu():
     """Displays the menu for managing itineraries."""
     while True:
         console.print("\n--- Manage Itinerary ---", style="bold cyan")
-        console.print("1. Add an Itinerary Entry", style="cyan")
+        console.print("1. Add an Itinerary Entry", style="bold cyan")
         console.print("2. View All Itinerary Entries", style="bold cyan")
         console.print("3. Edit an Itinerary Entry", style="bold cyan")
         console.print("4. Delete an Itinerary Entry", style="bold cyan")
@@ -522,11 +522,11 @@ def manage_expenses_menu():
     """Displays the menu for managing expenses."""
     while True:
         console.print("\n--- Manage Expenses ---", style="bold cyan")
-        console.print("1. Add an Expense", style="cyan")
-        console.print("2. View All Expenses", style="cyan")
-        console.print("3. Edit an Expense", style="cyan")
-        console.print("4. Delete an Expense", style="cyan")
-        console.print("5. Back to Main Menu", style="cyan")
+        console.print("1. Add an Expense", style="bold cyan")
+        console.print("2. View All Expenses", style="bold cyan")
+        console.print("3. Edit an Expense", style="bold cyan")
+        console.print("4. Delete an Expense", style="bold cyan")
+        console.print("5. Back to Main Menu", style="bold cyan")
 
         choice = input("Choose an option: ")
 
