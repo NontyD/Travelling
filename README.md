@@ -156,6 +156,87 @@ Develop marketing strategies to attract new users and grow the application's aud
 ### Development
 
 
+## User Guide
+
+1. **Starting the App**
+* The app automatically opens with main menu after the instructions.
+* Select the option you need from the main menu.
+* You can click RUN PROGRAM anytime you want to reset back to main menu.
+
+2. **Trip Management**
+* ***Create a New Trip:***
+* Select the "Create Trip" option from the main menu.
+* Enter the Trip ID (a positive number that hasn't been used before).
+* Enter the destination for your trip (e.g., Paris, Tokyo).
+* Provide the start date in the format YYYY-MM-DD. Ensure it's today or a future date.
+* Enter the end date in the same format. Make sure it’s on or after the start date.
+* Enter a budget (a positive number) for your trip.
+* If all information is valid, the new trip will be saved successfully.
+* ***Edit a Trip:***
+* Choose the "Edit Trip" option from the main menu.
+* Enter the Trip ID of the trip you want to edit.
+* Update any of the following details: destination, start date, end date, or budget.
+* Leave any field blank to keep the current value.
+* The trip details will be updated if all information is valid.
+* Delete a Trip:
+* Select the "Delete Trip" option from the main menu.
+* Enter the Trip ID of the trip you want to remove.
+* Confirm deletion when prompted. The trip will be permanently deleted from the records.
+
+3. **Itinerary Planning**
+* ***Add an Itinerary Entry:***
+* Choose "Add Itinerary Entry" from the main menu.
+* Enter the Trip ID for which the activity is planned.
+* Provide the date of the activity (in the format YYYY-MM-DD). Ensure it falls within the trip duration.
+* Enter a brief description of the activity (e.g., museum visit, hiking).
+* The entry will be added to the itinerary for the selected trip.
+* ***Edit an Itinerary Entry:***
+* Select "Edit Itinerary Entry" from the main menu.
+* Enter the Itinerary ID of the entry you wish to update.
+* Update the date and activity as needed, or leave blank to keep the existing values.
+* The entry will be updated with the new information.
+* ***Delete an Itinerary Entry:***
+* Choose "Delete Itinerary Entry" from the main menu.
+* Enter the Itinerary ID of the entry you wish to delete.
+* Confirm deletion when prompted. The entry will be permanently removed.
+
+4. **Expense Tracking**
+* ***Add an Expense:***
+* Select the "Add Expense" option from the main menu.
+* Enter the Trip ID associated with the expense.
+* Provide the expense ID (a positive number that hasn’t been used before for this trip).
+* Enter the amount spent (a non-negative number).
+* Choose a category for the expense (e.g., food, transport, accommodation).
+* Add a brief description (e.g., lunch at a restaurant).
+* The expense will be saved successfully if all information is valid.
+* ***Edit an Expense:***
+* Choose the "Edit Expense" option from the main menu.
+* Enter the Expense ID of the expense you wish to modify.
+* Update the Trip ID, amount, category, or description as needed. Leave any field blank to keep the   
+    current value.
+* The expense will be updated with the new details.
+* ***Delete an Expense:***
+* Select "Delete Expense" from the main menu.
+* Enter the Expense ID of the expense you want to remove.
+* Confirm deletion when prompted. The expense will be permanently removed.
+
+5. **View the Summary Dashboard**
+* Choose "View Summary" from the main menu to see a comprehensive overview of all your trips.
+* ***The dashboard displays:***
+* Total Expenses: The total amount spent on each trip.
+* Budget Remaining: The remaining budget after accounting for expenses.
+* Itinerary Details: A list of planned activities for each trip.
+* This section provides insights into spending patterns and trip organization.
+
+6. **Data Validation and Error Handling**
+* The app validates all inputs (e.g., dates must be in the YYYY-MM-DD format, budget must be a positive number).
+* If an invalid input is detected, an error message will appear with guidance on how to correct the entry.
+* Follow the prompts to ensure all inputs are correct before proceeding.
+
+7. **Access Data Across Sessions**
+* All trips, itineraries, and expenses are saved to JSON files, allowing you to pick up where you left off the next time you use the app.
+* Ensure the JSON files are stored in the correct directory to maintain data consistency across sessions.
+
 
 ## Features
 

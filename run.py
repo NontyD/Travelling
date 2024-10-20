@@ -41,6 +41,38 @@ def save_data(file_path, data):
     with open(file_path, "w") as file:
         json.dump(data, file, indent=4)
 
+def show_instructions():
+    """Displays the brief instructions for navigating the app."""
+    instructions = """
+    Welcome to the Travel Planner App!
+
+    Please follow these steps to get started:
+
+    IMPORTANT INSTRUCTIONS: (please read carefully)
+
+    Information once entered will be saved automatically.
+    Ensure all dates are entered in the YYYY-MM-DD format.
+    Trip IDs, Itinerary IDs, and Expense IDs must be unique.
+    If you encounter an error, review the details carefully.
+
+    HOW TO BEGIN:
+
+    Select an Option from the Main Menu:
+
+    Create, edit, or delete trips.
+    Add, edit, or delete itinerary entries.
+    Record and manage expenses.
+    Input Your Details Carefully:
+
+    Follow the prompts for each section when entering details.
+    Enjoy planning your travels!
+    """
+    print(instructions)
+
+
+# Call the function to display the instructions
+show_instructions()
+
 
 def manage_itinerary_menu():
     pass
