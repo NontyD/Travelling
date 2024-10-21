@@ -24,7 +24,7 @@ def print_error(message):
 
 def display_heading():
     # Use the global console instance
-    ascii_banner = pyfiglet.figlet_format("Travel Planner!", font="mini")
+    ascii_banner = pyfiglet.figlet_format("Travel Planner!", font="doom")
     console.print(f"\n✈ [bold blue]{ascii_banner}[/bold blue] ✈\n")
 
 
@@ -54,16 +54,8 @@ def show_instructions():
     Ensure all dates are entered in the YYYY-MM-DD format.
     Trip IDs, Itinerary IDs, and Expense IDs must be unique.
     If you encounter an error, review the details carefully.
-
-    HOW TO BEGIN:
-
-    Select an Option from the Main Menu:
-
-    Create, edit, or delete trips.
-    Add, edit, or delete itinerary entries.
-    Record and manage expenses.
-    Input Your Details Carefully:
-
+    TO BEGIN: Select an Option from the Main Menu and    
+    input your details carefully.
     Follow the prompts for each section when entering details.
     Enjoy planning your travels!
     """
