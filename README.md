@@ -174,11 +174,17 @@ Develop marketing strategies to attract new users and grow the application's aud
 ## User Guide
 
 1. **Starting the App**
+
+![Main menu](/assets/images/main-menu.png)
+
 * The app automatically opens with main menu after the instructions.
 * Select the option you need from the main menu.
 * You can click RUN PROGRAM anytime you want to reset back to main menu.
 
 2. **Trip Management**
+
+![Trip management](/assets/images/manage-trips.png)
+
 * ***Create a New Trip:***
 * Select the "Create Trip" option from the main menu.
 * Enter the Trip ID (a positive number that hasn't been used before).
@@ -199,6 +205,9 @@ Develop marketing strategies to attract new users and grow the application's aud
 * Confirm deletion when prompted. The trip will be permanently deleted from the records.
 
 3. **Itinerary Planning**
+
+![Itinerary management](/assets/images/manage-itinerary.png)
+
 * ***Add an Itinerary Entry:***
 * Choose "Add Itinerary Entry" from the main menu.
 * Enter the Trip ID for which the activity is planned.
@@ -216,6 +225,9 @@ Develop marketing strategies to attract new users and grow the application's aud
 * Confirm deletion when prompted. The entry will be permanently removed.
 
 4. **Expense Tracking**
+
+![Expense management](/assets/images/track-expenses.png)
+
 * ***Add an Expense:***
 * Select the "Add Expense" option from the main menu.
 * Enter the Trip ID associated with the expense.
@@ -236,6 +248,9 @@ Develop marketing strategies to attract new users and grow the application's aud
 * Confirm deletion when prompted. The expense will be permanently removed.
 
 5. **View the Summary Dashboard**
+
+![Summary](/assets/images/summary.png)
+
 * Choose "View Summary" from the main menu to see a comprehensive overview of all your trips.
 * ***The dashboard displays:***
 * Total Expenses: The total amount spent on each trip.
@@ -244,6 +259,9 @@ Develop marketing strategies to attract new users and grow the application's aud
 * This section provides insights into spending patterns and trip organization.
 
 6. **Data Validation and Error Handling**
+
+![Trip management](/assets/images/add-trip-errors.png)
+
 * The app validates all inputs (e.g., dates must be in the YYYY-MM-DD format, budget must be a positive number).
 * If an invalid input is detected, an error message will appear with guidance on how to correct the entry.
 * Follow the prompts to ensure all inputs are correct before proceeding.
