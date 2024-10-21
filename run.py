@@ -21,7 +21,6 @@ def print_warning(message):
 def print_error(message):
     console.print(message, style="bold red")
 
-
 def display_heading():
     # Use the global console instance
     ascii_banner = pyfiglet.figlet_format("Travel Planner!", font="bubble")
@@ -62,6 +61,8 @@ def show_instructions():
     print(instructions)
 
 
+# Call the function to display heading
+display_heading()
 # Call the function to display the instructions
 show_instructions()
 
@@ -72,7 +73,7 @@ def manage_itinerary_menu():
 
 def main_menu():
     while True:
-        display_heading()
+        #display_heading()
         console.print("--- Main Menu ---", style="bold cyan")
         console.print("1. Manage Trips", style="bold cyan")
         console.print("2. Manage Itinerary", style="bold cyan")
