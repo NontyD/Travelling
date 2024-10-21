@@ -24,7 +24,7 @@ def print_error(message):
 
 def display_heading():
     # Use the global console instance
-    ascii_banner = pyfiglet.figlet_format("Travel Planner!", font="doom")
+    ascii_banner = pyfiglet.figlet_format("Travel Planner!", font="bubble")
     console.print(f"\n✈ [bold blue]{ascii_banner}[/bold blue] ✈\n")
 
 
