@@ -1,5 +1,5 @@
 # Travel Planner
-![CCCCP header](/assets/images/landing.png)
+![Travel Planner](/assets/images/landing.png)
 
 As a person who loves traveling, managing trips, itineraries, and expenses can become overwhelming. This app was created to simplify that process, providing a streamlined way to plan, organize, and track all travel details. Whether it's managing multiple trips, keeping track of activities, or monitoring travel expenses, this application offers an all-in-one solution for travel enthusiasts and planners alike. By keeping everything in one place, users can focus more on enjoying their travels and less on the logistical details.
 
@@ -150,8 +150,23 @@ Develop marketing strategies to attract new users and grow the application's aud
 
 ### Pre development
 
-#### Flow chart
+#### Flow charts
 
+#### Main menu
+
+![Main menu](/assets/images/main-menu-flowchart.png)
+
+#### Trip management
+
+![Trip management](/assets/images/trip-management.png)
+
+#### Itinerary management
+
+![Itinerary management](/assets/images/itinerary-management.png)
+
+#### Expense management
+
+![Expense management](/assets/images/expense-management.png)
 
 ### Development
 
