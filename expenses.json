@@ -28,5 +28,17 @@
         "amount": 200.0,
         "category": "sightseeing",
         "description": "tour bus"
+    },
+    "6": {
+        "trip_id": "1",
+        "amount": 20.0,
+        "category": "food",
+        "description": "food"
+    },
+    "9": {
+        "trip_id": "10",
+        "amount": 300.0,
+        "category": "food",
+        "description": "drinks"
     }
 }

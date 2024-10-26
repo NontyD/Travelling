@@ -32,5 +32,11 @@
         "start_date": "2025-01-01",
         "end_date": "2025-01-01",
         "budget": "300"
+    },
+    "10": {
+        "destination": "Home",
+        "start_date": "2024-11-10",
+        "end_date": "2024-11-15",
+        "budget": "500"
     }
 }

@@ -580,7 +580,7 @@ def add_expense():
     while True:
         try:
             expense_id = int(
-                input("Enter expense ID (must be greater than 0): ").strip()
+                input("Enter expense ID (must be > 0): ").strip()
             )
             if expense_id > 0 and str(expense_id) not in expenses:
                 break
@@ -589,7 +589,7 @@ def add_expense():
             )
         except ValueError:
             console.print(
-                "[red]Invalid input. Please enter a positivenumeric ID.[/red]"
+                "[red]Invalid input. Please enter a positive numeric ID.[/red]"
             )
 
     # Validate trip ID
@@ -598,15 +598,29 @@ def add_expense():
         if trip_id in trips:
             break
         console.print(
-            "[red]Trip ID not found. Please enter a valid Trip ID that already"
-            "exists.[/red]"
+            "[red]Trip ID not found. Enter a valid Trip ID that exists.[/red]"
         )
 
-    # Validate amount
+    # Calculate remaining budget for the trip
+    budget = float(trips[trip_id].get("budget", 0))
+    associated_expenses = sum(
+        float(exp.get("amount", 0)) for exp in expenses.values()
+        if exp.get("trip_id") == trip_id
+    )
+    remaining_budget = budget - associated_expenses
+
+    console.print(f"Remaining budget for this trip: ${remaining_budget:.2f}")
+
+    # Validate amount and check against remaining budget
     while True:
         try:
             amount = float(input("Enter the amount: ").strip())
             if amount >= 0:
+                if budget > 0 and amount > remaining_budget:
+                    console.print(
+                        "[yellow]Warning: Adding this expense will exceed the "
+                        "trip's budget.[/yellow]"
+                    )
                 break
             console.print("[red]Amount must be a non-negative number.[/red]")
         except ValueError:
@@ -615,10 +629,10 @@ def add_expense():
             )
 
     # Validate category
-    category = input("Enter the category (e.g., food, transport): ").strip()
+    category = input("Enter category (e.g., food, transport): ").strip()
     while not category:
         console.print("[red]Category cannot be empty.[/red]")
-        category = input("Enter the category (e.g., transport): ").strip()
+        category = input("Enter category (e.g., transport): ").strip()
 
     # Validate description
     description = input("Enter a description: ").strip()
@@ -634,6 +648,8 @@ def add_expense():
     }
 
     expenses[str(expense_id)] = new_expense
+
+    # Save the updated expenses
     save_data(file_path, expenses)
     print_success("New expense added successfully!")
 
