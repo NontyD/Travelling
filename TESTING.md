@@ -69,10 +69,3 @@ The portal was tested in the following browsers (based on my own testing and tho
 - Safari
 
 It worked without issues in the above browsers.
-
-## Future Updates
-
-As a result of testing requests for future functionality include:
-
-
-

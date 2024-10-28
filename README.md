@@ -13,6 +13,7 @@ The deployed project live link is [HERE](https://travellingplanner-f3f27e55bd6d.
 - [Pre development](#pre-development)
     - [Flow chart](#flow-chart)
 - [Development](#development)
+    - [User Guide](#user-guide)
 - [Features](#features)
   - 
 - [Technologies Used](#technologies-used)
@@ -353,17 +354,36 @@ The main technology used to create this program is Python
 - Gitpod 
 - GitHub 
 - Heroku
-- 
+- Draw.io to create flowchart
 
 ### Libraries
 
-
+[json](https://docs.python.org/3/library/json.html) - for parsing and generating JSON data.
+[os](https://docs.python.org/3/library/os.html) - for file handling and path manipulation.
+[re](https://docs.python.org/3/library/re.html) - for pattern matching using regular expressions.
+[pandas](https://pypi.org/project/pandas/) - for data analysis and manipulation.
+[datetime](https://docs.python.org/3/library/datetime.html) - for working with dates and times.
+[pyfiglet](https://pypi.org/project/pyfiglet/) - for generating ASCII art from text.
+[rich](https://pypi.org/project/rich/) - for colorful and formatted console output.
 
 
 
 ## Future Updates
 
+#### Budget Analysis and Alerts:
 
+* Add detailed budget tracking with visual insights, like pie charts showing spending per category.
+* Introduce alerts for categories where spending exceeds a user-defined threshold.
+
+#### Expense Report Generation:
+
+* Create downloadable reports in PDF or Excel formats with expense summaries, categorized breakdowns, and budget vs. actual comparisons.
+* Include the option to email the report or share it with other team members.
+
+#### Currency Conversion:
+
+* Automatically convert expenses to a preferred currency based on trip location or user selection.
+* Integrate a currency conversion API to ensure exchange rates stay current.
 
 ## Validation
 
@@ -416,10 +436,19 @@ The deployed project live link is [HERE](https://travellingplanner-f3f27e55bd6d.
 
 ## Bugs
 
+Throughout the development process, various bugs were identified and resolved iteratively. A notable challenge was ensuring that the code conformed to a strict 79-character line limit, which occasionally introduced unintended errors, such as syntax issues and incorrect line breaks that affected the functionality.
+
+These bugs were carefully managed and fixed as they arose, with particular attention given to maintaining readability and functionality within the character constraints. This iterative debugging process helped enhance both the code’s structure and its adherence to best practices, ensuring a clean and functional final product.
 
 ## Credits
 
-
+[Real Python: Working with data](https://realpython.com/python-json/) - For handling json data, such as loading and saving expense and trip information in .json files.
+[W3Schools: Python String strip() Method](https://www.w3schools.com/python/ref_string_rstrip.asp) - To use .strip() to remove unwanted whitespace from user input, ensuring clean data for IDs, categories, and descriptions.
+[GeeksforGeeks: Python Try, Except, and Finally](https://www.geeksforgeeks.org/try-except-else-and-finally-in-python/) - For catching errors (like ValueError when converting input to numbers) and displaying user-friendly error messages.
+[DataCamp: Introduction to pandas](https://www.datacamp.com/tutorial/pandas) - For managing, analyzing, and visualizing data with pandas to track expenses effectively.
 
 ## Acknowledgements
 
+Tutor support
+Friends and family
+My mentor
