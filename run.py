@@ -21,6 +21,7 @@ def print_warning(message):
 def print_error(message):
     console.print(message, style="bold red")
 
+
 def display_heading():
     # Use the global console instance
     ascii_banner = pyfiglet.figlet_format("Travel Planner!", font="bubble")
@@ -40,6 +41,7 @@ def save_data(file_path, data):
     with open(file_path, "w") as file:
         json.dump(data, file, indent=4)
 
+
 def show_instructions():
     """Displays the brief instructions for navigating the app."""
     instructions = """
@@ -53,7 +55,7 @@ def show_instructions():
     Ensure all dates are entered in the YYYY-MM-DD format.
     Trip IDs, Itinerary IDs, and Expense IDs must be unique.
     If you encounter an error, review the details carefully.
-    TO BEGIN: Select an Option from the Main Menu and    
+    TO BEGIN: Select an Option from the Main Menu and
     input your details carefully.
     Follow the prompts for each section when entering details.
     Enjoy planning your travels!
@@ -73,7 +75,6 @@ def manage_itinerary_menu():
 
 def main_menu():
     while True:
-        #display_heading()
         console.print("--- Main Menu ---", style="bold cyan")
         console.print("1. Manage Trips", style="bold cyan")
         console.print("2. Manage Itinerary", style="bold cyan")

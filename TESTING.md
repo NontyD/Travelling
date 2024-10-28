@@ -55,6 +55,8 @@ The following tests were carried out to ensure the portal is working correctly
 
 ![delete expense](assets/images/delete-expense-error.png)
 
+![add expense](assets/images/add-expense-budget.png)
+
 ## Python validation test
 
 ![validation](assets/images/validation.png)
