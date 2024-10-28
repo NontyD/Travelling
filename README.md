@@ -275,6 +275,9 @@ Develop marketing strategies to attract new users and grow the application's aud
 ## Features
 
 1. Trip Management:
+
+![Trip management](/assets/images/trips-management.png)
+
 * Create Trips:
 Users can initiate new trips by specifying essential details, including:
 * * Destination: The location of the trip.
@@ -289,6 +292,9 @@ If plans change or a trip is no longer necessary, users can remove trips from th
 All trip information is stored and organized for easy access, enabling users to view their upcoming and past trips at a glance.
 
 2. Itinerary Planning:
+
+![Itinerary Planning](/assets/images/itinerary-management-feature.png)
+
 * Add Itinerary Entries:
 Users can create detailed itinerary entries for each trip, specifying:
 * * Activities: Various events or activities planned for specific days.
@@ -302,6 +308,9 @@ Users can remove entries if activities are canceled or rescheduled, ensuring the
 The itinerary feature helps users visualize their trip day by day, ensuring they make the most of their travel experience.
 
 3. Expense Tracking:
+
+![Expense Tracking](/assets/images/expense-management-feature.png)
+
 * Record Expenses:
 Users can log all expenses incurred during a trip, capturing:
 * * Amount Spent: The total amount of each expense.
@@ -315,6 +324,9 @@ Users can remove expense entries that are no longer relevant or were mistakenly 
 Organizing expenses into categories allows users to track their spending habits effectively and understand where their money is going.
 
 4. Summary Dashboard:
+
+![Summary Dashboard](/assets/images/summary-dashboard.png)
+
 * Detailed Summary:
 Users can view a comprehensive overview of all trips, including:
 * * Total Expenses: The sum of all expenses recorded for each trip.
@@ -324,6 +336,9 @@ Users can view a comprehensive overview of all trips, including:
 The dashboard provides insights into spending habits, helping users manage their finances better and plan future trips accordingly.
 
 5. Input Validation:
+
+![Input Validation](/assets/images/input-validation.png)
+
 * Data Validation:
 User inputs are checked for correct formatting to prevent errors, ensuring:
 * * Dates are in the correct format (YYYY-MM-DD).
@@ -331,14 +346,11 @@ User inputs are checked for correct formatting to prevent errors, ensuring:
 * Error Handling:
 Clear and informative error messages guide users when they enter invalid data, helping them correct mistakes easily.
 
-6. User-Friendly Interface:
-* Intuitive Navigation:
-The application features a simple and intuitive interface, allowing users to navigate through trip management functions effortlessly.
-* Responsive Design:
-The app is designed to be accessible on various devices, including smartphones, tablets, and desktops, providing a seamless experience regardless of screen size.
-
-7. Data Persistence:
+6. Data Persistence:
 * JSON Data Storage:
+
+![Json Data Storage](/assets/images/json.png)
+
 User data, including trips, itineraries, and expenses, is stored in JSON files, enabling easy retrieval and updates.
 * Session Accessibility:
 Users can access their data across multiple sessions, ensuring their information is saved and available whenever they return to the app.
@@ -359,11 +371,17 @@ The main technology used to create this program is Python
 ### Libraries
 
 [json](https://docs.python.org/3/library/json.html) - for parsing and generating JSON data.
+
 [os](https://docs.python.org/3/library/os.html) - for file handling and path manipulation.
+
 [re](https://docs.python.org/3/library/re.html) - for pattern matching using regular expressions.
+
 [pandas](https://pypi.org/project/pandas/) - for data analysis and manipulation.
+
 [datetime](https://docs.python.org/3/library/datetime.html) - for working with dates and times.
+
 [pyfiglet](https://pypi.org/project/pyfiglet/) - for generating ASCII art from text.
+
 [rich](https://pypi.org/project/rich/) - for colorful and formatted console output.
 
 
@@ -456,4 +474,4 @@ Tutor support
 
 Friends and family
 
-My mentor
+My mentor, Jubril Akolade
