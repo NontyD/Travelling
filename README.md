@@ -443,8 +443,11 @@ These bugs were carefully managed and fixed as they arose, with particular atten
 ## Credits
 
 [Real Python: Working with data](https://realpython.com/python-json/) - For handling json data, such as loading and saving expense and trip information in .json files.
+
 [W3Schools: Python String strip() Method](https://www.w3schools.com/python/ref_string_rstrip.asp) - To use .strip() to remove unwanted whitespace from user input, ensuring clean data for IDs, categories, and descriptions.
+
 [GeeksforGeeks: Python Try, Except, and Finally](https://www.geeksforgeeks.org/try-except-else-and-finally-in-python/) - For catching errors (like ValueError when converting input to numbers) and displaying user-friendly error messages.
+
 [DataCamp: Introduction to pandas](https://www.datacamp.com/tutorial/pandas) - For managing, analyzing, and visualizing data with pandas to track expenses effectively.
 
 ## Acknowledgements
